@@ -13,7 +13,7 @@ RUN apt update \
             opcache \
             pdo \
             pdo_pgsql \
-            pgsql \
+            pgsql
 
 WORKDIR /var/www/calambre
 
