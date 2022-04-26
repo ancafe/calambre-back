@@ -24,3 +24,13 @@ services:
       - ./apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
     depends_on:
       - database
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
