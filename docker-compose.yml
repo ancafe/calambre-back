@@ -1,29 +1,48 @@
-version: '3.8'
+version: "3.8"
 
-services: 
+services:
+  app:
+    build:
+      args:
+        user: 1000
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: calambre
+    container_name: calambre-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - calambre
+
   database:
     image: postgres
     container_name: calambre-db
     restart: unless-stopped
+    user: 1000:1000
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: calambre_db
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - ./.docker/postgres-data:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+    networks:
+      - calambre
 
-  php-apache:
-    container_name: calambre-app
-    build:
-      context: ./php
+  nginx:
+    image: nginx:alpine
+    container_name: calambre-nginx
+    restart: unless-stopped
     ports:
-        - '8080:80'
+      - 8080:80
     volumes:
-      - ./src:/var/www/calambre
-      - ./apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
-    depends_on:
-      - database
+      - ./:/var/www
+      - ./.docker/nginx:/etc/nginx/conf.d/
+    networks:
+      - calambre
 
   pgadmin:
     container_name: pgadmin
@@ -34,3 +53,10 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
       - "5050:80"
+    networks:
+      - calambre
+
+networks:
+  calambre:
+    driver: bridge
+
