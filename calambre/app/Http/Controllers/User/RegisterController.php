@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\User;
 
 
+use App\Exceptions\Type\ApiError;
+use App\Exceptions\Type\ApiNotFoundError;
+use App\Exceptions\ErrorDtoFactory;
 use App\Exceptions\GenericAPIError;
 use App\Exceptions\JsonEncodeException;
 use App\Http\Controllers\Controller;
@@ -26,10 +29,12 @@ class RegisterController extends Controller
         $password = $fields['password'];
 
         $edis = new EdisClient($username, $password);
+
+
         try {
             $login = $edis->login();
         } catch (EdisError $e) {
-            die("error en login");
+            throw new ApiError([ErrorDtoFactory::loginError()]);
         }
 
         if ($login) {
