@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "91db124093701d09123bfc80aed29d68",
+    "content-hash": "700dd7f71cd2965deabf9d212adadada",
     "packages": [
         {
             "name": "brick/math",
@@ -368,6 +368,61 @@
                 }
             ],
             "time": "2022-01-18T15:43:28+00:00"
+        },
+        {
+            "name": "edistribucion/edistribucion",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ancafe/edis.git",
+                "reference": "623228e866784390031ee4508b7f4de591e1f5c9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ancafe/edis/zipball/623228e866784390031ee4508b7f4de591e1f5c9",
+                "reference": "623228e866784390031ee4508b7f4de591e1f5c9",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.4",
+                "monolog/monolog": "^2.3"
+            },
+            "require-dev": {
+                "ext-dom": "*",
+                "ext-http": "*",
+                "vlucas/phpdotenv": "^5.4"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Edistribucion\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Ángel Cardiel",
+                    "email": "angel.cardiel@protonmail.com"
+                }
+            ],
+            "description": "A PHP package for use in PHP projects to access data from e-distribucion private area",
+            "homepage": "https://github.com/ancafe/edis",
+            "keywords": [
+                "api",
+                "e-distribucion",
+                "endesa",
+                "power",
+                "spanish"
+            ],
+            "support": {
+                "issues": "https://github.com/ancafe/edis/issues",
+                "source": "https://github.com/ancafe/edis/tree/main"
+            },
+            "time": "2022-05-01T17:01:25+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -7734,7 +7789,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "edistribucion/edistribucion": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
