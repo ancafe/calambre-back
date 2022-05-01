@@ -1,1 +1,9 @@
 .docker/postgres-data/
+# ---- Sonar
+.sonar
+
+# ---- IntelliJ IDEA
+*.iws
+*.iml
+*.ipr
+.idea
