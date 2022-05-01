@@ -6,8 +6,6 @@ namespace App\Http\Controllers\User;
 use App\Exceptions\Type\ApiError;
 use App\Exceptions\Type\ApiNotFoundError;
 use App\Exceptions\ErrorDtoFactory;
-use App\Exceptions\GenericAPIError;
-use App\Exceptions\JsonEncodeException;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Edistribucion\EdisError;

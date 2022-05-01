@@ -48,11 +48,22 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (Throwable $e) {
+
+            $msgError = $this->isJson($e->getMessage()) ? json_decode($e->getMessage()) : $e->getMessage();
+
             return response([
-                'error' => json_decode($e->getMessage()),
+                'error' => $msgError,
                 'code' => $e->getCode()
             ], $e->getCode() ?: 400);
+
         });
 
     }
+
+    private function isJson($string): bool
+    {
+        json_decode($string);
+        return json_last_error() === JSON_ERROR_NONE;
+    }
+
 }
