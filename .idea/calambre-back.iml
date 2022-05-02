@@ -119,6 +119,11 @@
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/phpdocumentor/reflection-docblock" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/phpdocumentor/type-resolver" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/graham-campbell/result-type" />
+      <excludeFolder url="file://$MODULE_DIR$/calambre/vendor/lcobucci/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/calambre/vendor/lcobucci/jwt" />
+      <excludeFolder url="file://$MODULE_DIR$/calambre/vendor/namshi/jose" />
+      <excludeFolder url="file://$MODULE_DIR$/calambre/vendor/php-open-source-saver/jwt-auth" />
+      <excludeFolder url="file://$MODULE_DIR$/calambre/vendor/stella-maris/clock" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

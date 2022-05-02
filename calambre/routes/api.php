@@ -17,21 +17,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-// Public routes
-Route::post('/register', [RegisterController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'authenticate']);
 
-// Protected routes
-Route::group(['middleware' => ['auth:sanctum']], function () {
+Route::group(['middleware' => ['jwt.verify', 'RLS']], function () {
 
-    Route::post('/logout', [AuthController::class, 'logout']);
-
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
-
-
-    Route::get('/companies', [\App\Http\Controllers\CompanyController::class, 'getAll']);
-
+    Route::get('user', [AuthController::class, 'getAuthenticatedUser']);
 
 });

@@ -8,16 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Laravel\Sanctum\Guard;
 
 class RLSUserMiddleware
 {
-    protected Guard $auth;
-
-    public function __construct(Guard $auth)
-    {
-        $this->auth = $auth;
-    }
 
     /**
      * Handle an incoming request.
@@ -28,9 +21,9 @@ class RLSUserMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->user()) {
+        if (auth()) {
             //logged --> RLS
-            Config::set("database.connections.pgsql.username", $request->user()->id);
+            Config::set("database.connections.pgsql.username", auth()->payload()->get('id'));
             Config::set("database.connections.pgsql.password", '1234');
             Schema::connection('pgsql')->getConnection()->reconnect();
             return $next($request);
