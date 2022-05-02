@@ -24,8 +24,6 @@ class User extends Authenticatable implements JWTSubject
         'password'
     ];
 
-    protected $appends = ['encrypt_key'];
-
     /**
      * The attributes that should be hidden for serialization.
      *

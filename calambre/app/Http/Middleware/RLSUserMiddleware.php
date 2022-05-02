@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Database\Connection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
@@ -23,8 +24,9 @@ class RLSUserMiddleware
     {
         if (auth()) {
             //logged --> RLS
-            Config::set("database.connections.pgsql.username", auth()->payload()->get('id'));
-            Config::set("database.connections.pgsql.password", '1234');
+            $userUUID = auth()->payload()->get('id');
+            Config::set("database.connections.pgsql.username", $userUUID);
+            Config::set("database.connections.pgsql.password", auth()->user()->getAuthPassword());
             Schema::connection('pgsql')->getConnection()->reconnect();
             return $next($request);
 

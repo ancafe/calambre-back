@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\CreateDatabaseUserWhenUserRegisteredService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -49,18 +50,6 @@ class AuthController extends Controller
     public function me()
     {
         return response()->json(auth()->user());
-    }
-
-    /**
-     * Log the user out (Invalidate the token).
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function logout()
-    {
-        auth()->logout();
-
-        return response()->json(['message' => 'Successfully logged out']);
     }
 
     /**
@@ -121,7 +110,7 @@ class AuthController extends Controller
     }
 
 
-    public function register(Request $request)
+    public function register(Request $request, CreateDatabaseUserWhenUserRegisteredService $createDatabaseUserWhenUserRegisteredService)
     {
         Log::info($request);
         $validator = Validator::make($request->all(), [
@@ -134,13 +123,18 @@ class AuthController extends Controller
             return response()->json($validator->errors()->toJson(),400);
         }
 
+        $password = Hash::make($request->get('password'));
+
         $user = User::create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
-            'password' => Hash::make($request->get('password')),
+            'password' => $password,
         ]);
 
         $token = JWTAuth::fromUser($user);
+
+        $createDatabaseUserWhenUserRegisteredService->create($user->id, $password);
+        Log::info("Registered user $user->id with email $user->email");
 
         return response()->json(compact('user','token'),201);
     }
