@@ -23,25 +23,6 @@ class RegisterController extends Controller
             'password' => 'required|string|confirmed'
         ]);
 
-        $username = $fields['name'];
-        $password = $fields['password'];
-
-        $edis = new EdisClient($username, $password);
-
-
-        try {
-            $login = $edis->login();
-        } catch (EdisError $e) {
-            throw new ApiError([ErrorDtoFactory::loginError()]);
-        }
-
-        if ($login) {
-            die("he hecho login");
-        } else {
-            die("no login");
-        }
-
-
         $user = User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
