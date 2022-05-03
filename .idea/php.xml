@@ -227,6 +227,13 @@
       <path value="$PROJECT_DIR$/calambre/vendor/namshi/jose" />
       <path value="$PROJECT_DIR$/calambre/vendor/php-open-source-saver/jwt-auth" />
       <path value="$PROJECT_DIR$/calambre/vendor/stella-maris/clock" />
+      <path value="$PROJECT_DIR$/calambre/vendor/doctrine/annotations" />
+      <path value="$PROJECT_DIR$/calambre/vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/calambre/vendor/psr/cache" />
+      <path value="$PROJECT_DIR$/calambre/vendor/swagger-api/swagger-ui" />
+      <path value="$PROJECT_DIR$/calambre/vendor/zircote/swagger-php" />
+      <path value="$PROJECT_DIR$/calambre/vendor/darkaonline/l5-swagger" />
+      <path value="$PROJECT_DIR$/calambre/vendor/betterapp/laravel-db-encrypter" />
     </include_path>
   </component>
   <component name="PhpInterpreters">

@@ -6,6 +6,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "betterapp/laravel-db-encrypter": "^1.0",
+        "darkaonline/l5-swagger": "^8.3",
         "edistribucion/edistribucion": "dev-main",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.2",
