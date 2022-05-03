@@ -2,7 +2,11 @@
 
 namespace App\Models;
 
+use App\Casts\EncrypterCast;
+use App\Services\FixEncrypter;
+use App\Traits\EmailSignatureTrait;
 use App\Traits\UUID;
+use betterapp\LaravelDbEncrypter\Traits\EncryptableDbAttribute;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,7 +15,11 @@ use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable, UUID;
+
+    use HasFactory;
+    use Notifiable;
+    use UUID;
+    use EncryptableDbAttribute;
 
     /**
      * The attributes that are mass assignable.
@@ -21,7 +29,8 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'name',
         'email',
-        'password'
+        'password',
+        'edisUser',
     ];
 
     /**
@@ -32,6 +41,7 @@ class User extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password',
         'remember_token',
+        'edisPassword',
     ];
 
     /**
@@ -40,7 +50,19 @@ class User extends Authenticatable implements JWTSubject
      * @var array<string, string>
      */
     protected $casts = [
+        'email' => EncrypterCast::class,
         'email_verified_at' => 'datetime',
+    ];
+
+    /**
+     * The attributes that should be encrypted
+     *
+     * @var array|string[]
+     */
+    protected array $encryptable = [
+        'name',
+        'edisUsername',
+        'edisPassword',
     ];
 
     public function getJWTIdentifier()

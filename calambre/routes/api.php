@@ -1,8 +1,5 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\User\RegisterController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,11 +14,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'authenticate']);
+Route::withoutMiddleware('auth:api')->group(function () {
+    Route::post('register', \App\Http\Controllers\User\RegisterController::class);
+    Route::post('login', \App\Http\Controllers\User\LoginController::class);
+});
+
 
 Route::group(['middleware' => ['jwt.verify', 'RLS']], function () {
-
-    Route::get('user', [AuthController::class, 'getAuthenticatedUser']);
-
+    Route::get('me', \App\Http\Controllers\User\GetUserInformationController::class);
+    Route::put('edis', \App\Http\Controllers\User\PutEdisLoginInformationController::class);
+    Route::get('edis/check', \App\Http\Controllers\Edis\EdisCheckLoginController::class);
 });
+

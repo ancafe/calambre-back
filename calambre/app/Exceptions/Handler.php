@@ -49,12 +49,17 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (Throwable $e) {
 
-//            $msgError = $this->isJson($e->getMessage()) ? json_decode($e->getMessage()) : $e->getMessage();
-//
-//            return response([
-//                'error' => $msgError,
-//                'code' => $e->getCode()
-//            ], $e->getCode() ?: 400);
+            $msgError = $this->isJson($e->getMessage()) ? json_decode($e->getMessage()) : $e->getMessage();
+
+            if ($e->getCode() >= 100 && $e->getCode()<600) {
+                return response([
+                    'code' => $e->getCode(),
+                    'success' => false,
+                    'msg' => $msgError
+                ], $e->getCode() ?: 400);
+            }
+
+            return;
 
         });
 

@@ -22,7 +22,7 @@ class RLSUserMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()) {
+        if (auth()->user()) {
             //logged --> RLS
             $userUUID = auth()->payload()->get('id');
             Config::set("database.connections.pgsql.username", $userUUID);

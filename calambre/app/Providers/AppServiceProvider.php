@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Edistribucion\EdisClient;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,9 +12,14 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        //
+        $this->app->singleton(EdisClient::class, function ($app) {
+            return new EdisClient(
+                auth()->user()->edisUsername,
+                auth()->user()->edisPassword,
+            );
+        });
     }
 
     /**
