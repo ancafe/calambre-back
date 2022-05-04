@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Exceptions\ErrorDtoFactory;
 use App\Exceptions\Type\ApiError;
 use App\Http\Controllers\Controller;
 use App\Models\User;

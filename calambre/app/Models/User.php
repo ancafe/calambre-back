@@ -3,10 +3,7 @@
 namespace App\Models;
 
 use App\Casts\EncrypterCast;
-use App\Services\FixEncrypter;
-use App\Traits\EmailSignatureTrait;
 use App\Traits\UUID;
-use betterapp\LaravelDbEncrypter\Traits\EncryptableDbAttribute;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -19,13 +16,7 @@ class User extends Authenticatable implements JWTSubject
     use HasFactory;
     use Notifiable;
     use UUID;
-    use EncryptableDbAttribute;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
@@ -33,37 +24,18 @@ class User extends Authenticatable implements JWTSubject
         'edisUser',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
         'edisPassword',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email' => EncrypterCast::class,
         'email_verified_at' => 'datetime',
+        'name' => 'encrypted',
     ];
 
-    /**
-     * The attributes that should be encrypted
-     *
-     * @var array|string[]
-     */
-    protected array $encryptable = [
-        'name',
-        'edisUsername',
-        'edisPassword',
-    ];
 
     public function getJWTIdentifier()
     {
@@ -85,7 +57,12 @@ class User extends Authenticatable implements JWTSubject
 
     public function supplies(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Supply::class);
+        return $this->hasMany(Supply::class, 'user', 'id');
+    }
+
+    public function edis(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(EdisInfo::class, 'user', 'id');
     }
 
 }

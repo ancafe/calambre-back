@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
+use App\Casts\EncrypterCast;
 use App\Traits\UUID;
-use betterapp\LaravelDbEncrypter\Traits\EncryptableDbAttribute;
 use Illuminate\Database\Eloquent\Model;
 
 class Supply extends Model
 {
     use UUID;
-    use EncryptableDbAttribute;
 
     protected $fillable = [
         'user',
@@ -19,20 +18,22 @@ class Supply extends Model
         'main'
     ];
 
-    protected $encryptable = [
-        'edis_id',
-        'cups',
-        'provisioning_address'
-    ];
-
     protected $casts = [
-        'main' => 'boolean'
+        'edis_id' => EncrypterCast::class,
+        'main' => 'boolean',
+        'cups' => 'encrypted',
+        'provisioning_address' => 'encrypted',
     ];
 
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function contracts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Contract::class, 'supply', 'id');
     }
 
 

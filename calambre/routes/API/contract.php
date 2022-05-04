@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/all', \App\Http\Controllers\Supply\GetAllSuppliesForUserController::class);
-Route::put('{supply}/main', \App\Http\Controllers\Supply\SetAsMainSupplyController::class);
-
-
+Route::get('{contract}/measure', \App\Http\Controllers\Contract\GetContractMeasureController::class);
+Route::get('/measure', \App\Http\Controllers\Contract\GetDefaultMeasureController::class);
 

@@ -20,8 +20,6 @@ return new class extends Migration
             $table->text('email')->unique()->comment('IV comparator');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->text('edisUsername')->nullable()->comment('EDIS Login User');
-            $table->text('edisPassword')->nullable()->comment('EDIS Login Password');
             $table->rememberToken();
             $table->timestamps();
         });

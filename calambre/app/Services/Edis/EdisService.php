@@ -11,7 +11,8 @@ class EdisService
 
     public function __construct(?EdisClient $edis)
     {
-        if ($edis){
+        $this->edis = null;
+        if ($edis) {
             $this->edis = $edis;
         }
     }
@@ -19,8 +20,13 @@ class EdisService
     /**
      * @throws \Exception
      */
-    public function check() : bool
+    public function check(): bool
     {
+
+        if (!$this->edis) {
+            return false;
+        }
+
         try {
             $this->edis->login();
         } catch (EdisError $e) {
@@ -37,6 +43,16 @@ class EdisService
     public function getLoginInfo()
     {
         return $this->edis->get_login_info();
+    }
+
+    public function getMeasure(string $internalId): array|string
+    {
+        return $this->edis->get_measure($internalId);
+    }
+
+    public function getCUPSDetail(string $cupsID)
+    {
+        return $this->edis->get_cups_detail($cupsID);
     }
 
 

@@ -15,10 +15,10 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(EdisClient::class, function ($app) {
-            if(auth()->user()){
+            if(auth()->user() && auth()->user()->edis()->exists()){
                 return new EdisClient(
-                    auth()->user()->edisUsername,
-                    auth()->user()->edisPassword,
+                    auth()->user()->edis->username,
+                    auth()->user()->edis->password,
                 );
             }
         });

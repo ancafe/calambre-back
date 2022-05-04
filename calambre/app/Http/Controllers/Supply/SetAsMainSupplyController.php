@@ -27,8 +27,7 @@ class SetAsMainSupplyController extends Controller
                 $other->main = false;
                 $other->saveOrFail();
             }
-
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             throw new ApiError([ErrorDtoFactory::undefined()]);
         }
 

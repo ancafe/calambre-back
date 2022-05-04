@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Edis;
 use App\Exceptions\ErrorDtoFactory;
 use App\Exceptions\Type\ApiError;
 use App\Http\Controllers\Controller;
+use App\Models\EdisInfo;
 use App\Services\API_Response\APISuccess;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -28,14 +29,20 @@ class SetLoginInformationController extends Controller
             throw new ApiError([ErrorDtoFactory::validation($validator->errors()->toArray())]);
         }
 
-        auth()->user()->setAttribute("edisUsername", $request->get('username'));
-        auth()->user()->setAttribute("edisPassword", $request->get('password'));
+        $edisInfo = EdisInfo::updateOrCreate([
+            'user' => auth()->user()->id
+        ],[
+            'username' => $request->get('username'),
+            'password' => $request->get('password'),
+            'user' => auth()->user()->id
+        ]);
 
-        if (!auth()->user()->saveOrFail()){
+
+        if (!$edisInfo->saveOrFail()) {
             throw new ApiError([ErrorDtoFactory::cantStorageInformation($validator->errors()->toArray())]);
         }
 
-        Log::info('EDIS Login info stored for user '. auth()->user()->id);
+        Log::info('EDIS Login info stored for user ' . auth()->user()->id);
         return response()->json(new APISuccess('Login info saved'));
 
     }

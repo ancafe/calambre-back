@@ -20,6 +20,12 @@ class GetUserBasicInformationController extends AbstractEdisController
             throw new ApiError([ErrorDtoFactory::loginEdisError()]);
         }
 
+        $info = $this->edisService->getLoginInfo();
+
+        auth()->user()->edis->visibility = $info['visibility']['Id'];
+        auth()->user()->edis->name = $info['Name'];
+        auth()->user()->edis->saveOrFail();
+
         return response()->json($this->edisService->getLoginInfo());
     }
 }

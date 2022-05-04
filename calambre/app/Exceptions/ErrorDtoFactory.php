@@ -9,7 +9,7 @@ class ErrorDtoFactory
      * CODE 0-*: System errors
      * CODE 1-*: Edis Login Error
      * CODE 2-*: User Error
-     *
+     * CODE 3-*: Contract Error
      */
 
     public static function undefined($variables = null): ErrorDto
@@ -72,5 +72,19 @@ class ErrorDtoFactory
         return new ErrorDto('2-7', 'User not found', $variables);
     }
 
+    public static function noDefaultSupplyFounded($variables = null): ErrorDto
+    {
+        return new ErrorDto('3-1', 'No default supply founded', $variables);
+    }
+
+    public static function moreThanOneDefaultSupplyFounded($variables = null): ErrorDto
+    {
+        return new ErrorDto('3-2', 'More than one default contract founded', $variables);
+    }
+
+    public static function noActiveContractFounded($variables = null): ErrorDto
+    {
+        return new ErrorDto('3-3', 'No active contract founded for supply', $variables);
+    }
 
 }

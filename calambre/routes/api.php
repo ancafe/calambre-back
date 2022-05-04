@@ -23,5 +23,6 @@ Route::group(['middleware' => ['jwt.verify', 'RLS']], function () {
     Route::get('me', \App\Http\Controllers\User\GetUserInformationController::class);
     Route::prefix('/edis')->group(__DIR__.'/API/edis.php');
     Route::prefix('/supply')->group(__DIR__.'/API/supply.php');
+    Route::prefix('/contract')->group(__DIR__.'/API/contract.php');
 });
 
