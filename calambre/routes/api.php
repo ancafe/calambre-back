@@ -19,10 +19,9 @@ Route::withoutMiddleware('auth:api')->group(function () {
     Route::post('login', \App\Http\Controllers\User\LoginController::class);
 });
 
-
 Route::group(['middleware' => ['jwt.verify', 'RLS']], function () {
     Route::get('me', \App\Http\Controllers\User\GetUserInformationController::class);
-    Route::put('edis', \App\Http\Controllers\User\PutEdisLoginInformationController::class);
-    Route::get('edis/check', \App\Http\Controllers\Edis\EdisCheckLoginController::class);
+    Route::prefix('/edis')->group(__DIR__.'/API/edis.php');
+    Route::prefix('/supply')->group(__DIR__.'/API/supply.php');
 });
 

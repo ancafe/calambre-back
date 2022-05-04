@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Edis;
 
 use App\Exceptions\ErrorDtoFactory;
 use App\Exceptions\Type\ApiError;
@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
-class PutEdisLoginInformationController extends Controller
+class SetLoginInformationController extends Controller
 {
 
     /**

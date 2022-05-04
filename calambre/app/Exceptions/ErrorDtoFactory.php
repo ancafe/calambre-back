@@ -17,6 +17,11 @@ class ErrorDtoFactory
         return new ErrorDto('0-0', 'Fatal Error. Check ErrorDtoFactory.php', $variables);
     }
 
+    public static function routeNotFound($variables = null): ErrorDto
+    {
+        return new ErrorDto('0-1', 'Route not found', $variables);
+    }
+
     public static function validation($variables = null): ErrorDto
     {
         return new ErrorDto('0-1', 'Validation error', $variables);

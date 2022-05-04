@@ -2,7 +2,10 @@
 
 namespace App\Exceptions;
 
+use App\Exceptions\Type\ApiError;
+use App\Exceptions\Type\ApiNotFoundError;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -51,6 +54,10 @@ class Handler extends ExceptionHandler
 
             $msgError = $this->isJson($e->getMessage()) ? json_decode($e->getMessage()) : $e->getMessage();
 
+            if ($e instanceof NotFoundHttpException) {
+                throw new ApiNotFoundError([ErrorDtoFactory::routeNotFound()]);
+            }
+
             if ($e->getCode() >= 100 && $e->getCode()<600) {
                 return response([
                     'code' => $e->getCode(),
@@ -59,7 +66,6 @@ class Handler extends ExceptionHandler
                 ], $e->getCode() ?: 400);
             }
 
-            return;
 
         });
 

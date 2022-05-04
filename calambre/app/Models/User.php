@@ -83,4 +83,9 @@ class User extends Authenticatable implements JWTSubject
         return auth()->payload()->get('encrypt_key') ?: null;
     }
 
+    public function supplies(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Supply::class);
+    }
+
 }

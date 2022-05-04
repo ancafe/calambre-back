@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Edis;
 
 use App\Exceptions\ErrorDtoFactory;
 use App\Exceptions\Type\ApiError;
+use App\Http\Controllers\Controller;
 use App\Services\API_Response\APISuccess;
+use App\Services\Edis\EdisService;
 
-class EdisCheckLoginController extends AbstractEdisController
+class GetUserBasicInformationController extends AbstractEdisController
 {
-
     /**
      * @throws ApiError
      * @throws \Exception
@@ -19,6 +20,6 @@ class EdisCheckLoginController extends AbstractEdisController
             throw new ApiError([ErrorDtoFactory::loginEdisError()]);
         }
 
-        return response()->json(new APISuccess('Connected to Edis!'));
+        return response()->json($this->edisService->getLoginInfo());
     }
 }

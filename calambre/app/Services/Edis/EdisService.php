@@ -5,13 +5,15 @@ namespace App\Services\Edis;
 use Edistribucion\EdisClient;
 use Edistribucion\EdisError;
 
-class CheckIfLoginIsSuccessService
+class EdisService
 {
-    private EdisClient $edis;
+    private ?EdisClient $edis;
 
-    public function __construct(EdisClient $client)
+    public function __construct(?EdisClient $edis)
     {
-        $this->edis = $client;
+        if ($edis){
+            $this->edis = $edis;
+        }
     }
 
     /**
@@ -25,7 +27,16 @@ class CheckIfLoginIsSuccessService
             return false;
         }
         return true;
+    }
 
+    public function getSupplies()
+    {
+        return $this->edis->get_cups();
+    }
+
+    public function getLoginInfo()
+    {
+        return $this->edis->get_login_info();
     }
 
 

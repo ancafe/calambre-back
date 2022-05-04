@@ -18,7 +18,6 @@ class ApiError extends \Exception
             function ($error) {
                 $returnArray = [
                     'code' => $error->getCode(),
-                    'success' => false,
                     'description' => $error->getDescription(),
                 ];
 

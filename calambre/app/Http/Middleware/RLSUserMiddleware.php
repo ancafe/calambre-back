@@ -29,7 +29,6 @@ class RLSUserMiddleware
             Config::set("database.connections.pgsql.password", auth()->user()->getAuthPassword());
             Schema::connection('pgsql')->getConnection()->reconnect();
             return $next($request);
-
         }
         return $next($request);
     }
