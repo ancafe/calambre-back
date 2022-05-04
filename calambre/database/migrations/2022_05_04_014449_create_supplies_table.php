@@ -43,7 +43,6 @@ return new class extends Migration {
 
     public function down()
     {
-        DB::statement('DROP POLICY IF EXISTS user_isolated ON ' . $this->table);
         Schema::dropIfExists($this->table);
     }
 };
