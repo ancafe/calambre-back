@@ -4,10 +4,10 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/calambre/app" isTestSource="false" packagePrefix="App\" />
-      <sourceFolder url="file://$MODULE_DIR$/calambre/database/factories" isTestSource="false" packagePrefix="Database\Factories\" />
-      <sourceFolder url="file://$MODULE_DIR$/calambre/database/seeders" isTestSource="false" packagePrefix="Database\Seeders\" />
-      <sourceFolder url="file://$MODULE_DIR$/calambre/tests" isTestSource="true" packagePrefix="Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/app" isTestSource="false" packagePrefix="App\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/database/factories" isTestSource="false" packagePrefix="Database\Factories\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/database/seeders" isTestSource="false" packagePrefix="Database\Seeders\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/tests" isTestSource="true" packagePrefix="Tests\" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/psr/container" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/psr/event-dispatcher" />
@@ -119,21 +119,21 @@
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/phpdocumentor/reflection-docblock" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/phpdocumentor/type-resolver" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/graham-campbell/result-type" />
-      <excludeFolder url="file://$MODULE_DIR$/calambre/vendor/lcobucci/clock" />
-      <excludeFolder url="file://$MODULE_DIR$/calambre/vendor/lcobucci/jwt" />
-      <excludeFolder url="file://$MODULE_DIR$/calambre/vendor/namshi/jose" />
-      <excludeFolder url="file://$MODULE_DIR$/calambre/vendor/php-open-source-saver/jwt-auth" />
-      <excludeFolder url="file://$MODULE_DIR$/calambre/vendor/stella-maris/clock" />
-      <excludeFolder url="file://$MODULE_DIR$/calambre/storage/app" />
-      <excludeFolder url="file://$MODULE_DIR$/calambre/storage/certs" />
-      <excludeFolder url="file://$MODULE_DIR$/calambre/storage/framework" />
-      <excludeFolder url="file://$MODULE_DIR$/calambre/vendor/doctrine/annotations" />
-      <excludeFolder url="file://$MODULE_DIR$/calambre/vendor/symfony/yaml" />
-      <excludeFolder url="file://$MODULE_DIR$/calambre/vendor/psr/cache" />
-      <excludeFolder url="file://$MODULE_DIR$/calambre/vendor/swagger-api/swagger-ui" />
-      <excludeFolder url="file://$MODULE_DIR$/calambre/vendor/zircote/swagger-php" />
-      <excludeFolder url="file://$MODULE_DIR$/calambre/vendor/darkaonline/l5-swagger" />
-      <excludeFolder url="file://$MODULE_DIR$/calambre/vendor/betterapp/laravel-db-encrypter" />
+      <excludeFolder url="file://$MODULE_DIR$/src/storage/framework" />
+      <excludeFolder url="file://$MODULE_DIR$/src/storage/app" />
+      <excludeFolder url="file://$MODULE_DIR$/src/storage/certs" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/lcobucci/jwt" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/lcobucci/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/betterapp/laravel-db-encrypter" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/doctrine/annotations" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/zircote/swagger-php" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/darkaonline/l5-swagger" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/stella-maris/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/php-open-source-saver/jwt-auth" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/namshi/jose" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/swagger-api/swagger-ui" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/symfony/yaml" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/psr/cache" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
