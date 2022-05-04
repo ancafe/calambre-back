@@ -590,12 +590,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ancafe/edis.git",
-                "reference": "7b7a61f8a31fef11f7ff3811056e10006feb134d"
+                "reference": "db8c0a559a7be30234e0493dc19a11240f15fba2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ancafe/edis/zipball/7b7a61f8a31fef11f7ff3811056e10006feb134d",
-                "reference": "7b7a61f8a31fef11f7ff3811056e10006feb134d",
+                "url": "https://api.github.com/repos/ancafe/edis/zipball/db8c0a559a7be30234e0493dc19a11240f15fba2",
+                "reference": "db8c0a559a7be30234e0493dc19a11240f15fba2",
                 "shasum": ""
             },
             "require": {
@@ -637,7 +637,7 @@
                 "issues": "https://github.com/ancafe/edis/issues",
                 "source": "https://github.com/ancafe/edis/tree/main"
             },
-            "time": "2022-05-04T10:34:02+00:00"
+            "time": "2022-05-04T22:42:47+00:00"
         },
         {
             "name": "egulias/email-validator",

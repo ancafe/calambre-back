@@ -50,6 +50,12 @@ class EdisService
         return $this->edis->get_measure($internalId);
     }
 
+    public function getMeasureInterval(string $internalId, \DateTime $startDate, \DateTime $endDate): array|string
+    {
+
+        return $this->edis->get_meas_interval($internalId,$startDate,$endDate);
+    }
+
     public function getCUPSDetail(string $cupsID)
     {
         return $this->edis->get_cups_detail($cupsID);

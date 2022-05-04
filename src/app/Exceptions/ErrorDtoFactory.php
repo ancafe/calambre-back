@@ -87,4 +87,19 @@ class ErrorDtoFactory
         return new ErrorDto('3-3', 'No active contract founded for supply', $variables);
     }
 
+    public static function noMeasureFounded($variables = null): ErrorDto
+    {
+        return new ErrorDto('3-4', 'No measure founded', $variables);
+    }
+
+    public static function intervalMalformed($variables = null): ErrorDto
+    {
+        return new ErrorDto('3-5', 'Interval malformed. Negative days.', $variables);
+    }
+
+    public static function intervalOutOfRange($variables = null): ErrorDto
+    {
+        return new ErrorDto('3-6', 'Interval out of range. Max days between dates: 60', $variables);
+    }
+
 }
