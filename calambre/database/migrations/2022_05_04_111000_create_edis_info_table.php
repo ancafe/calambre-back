@@ -28,10 +28,22 @@ return new class extends Migration
 
         DB::statement('GRANT ALL ON TABLE public.'.$this->table.' TO "RLS_Users";');
 
+        DB::statement('ALTER TABLE public.' . $this->table . ' ENABLE ROW LEVEL SECURITY;');
+
+        DB::statement('CREATE POLICY user_isolated ON public.' . $this->table . '
+	        AS PERMISSIVE
+	        FOR ALL
+            TO public
+	        USING('.
+                $this->table . '.user::TEXT = current_user
+	        );
+	    ');
+
     }
 
     public function down()
     {
+        DB::statement('DROP POLICY IF EXISTS user_isolated ON ' . $this->table);
         Schema::dropIfExists($this->table);
     }
 };

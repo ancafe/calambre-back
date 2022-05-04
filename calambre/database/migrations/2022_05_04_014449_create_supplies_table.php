@@ -5,11 +5,13 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
+
+    private $table = 'supplies';
+
     public function up()
     {
-        Schema::create('supplies', function (Blueprint $table) {
+        Schema::create($this->table, function (Blueprint $table) {
             $table->uuid("id")->primary();
             $table->uuid('user');
             $table->text("edis_id");
@@ -23,12 +25,25 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::statement('GRANT ALL ON TABLE public.supplies TO "RLS_Users";');
+        DB::statement('GRANT ALL ON TABLE public.' . $this->table . ' TO "RLS_Users";');
+
+        DB::statement('ALTER TABLE public.' . $this->table . ' ENABLE ROW LEVEL SECURITY;');
+
+        DB::statement('CREATE POLICY user_isolated ON public.' . $this->table . '
+	        AS PERMISSIVE
+	        FOR ALL
+            TO public
+	        USING('.
+                $this->table . '.user::TEXT = current_user
+	        );
+	    ');
+
 
     }
 
     public function down()
     {
-        Schema::dropIfExists('supplies');
+        DB::statement('DROP POLICY IF EXISTS user_isolated ON ' . $this->table);
+        Schema::dropIfExists($this->table);
     }
 };
