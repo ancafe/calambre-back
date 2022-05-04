@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+
+    use \App\Traits\RLSMigrationTrait;
+
     protected $table = "companies";
 
     public function up()
@@ -22,18 +25,7 @@ return new class extends Migration
             $table->foreign('user')->references('id')->on('users');
         });
 
-        DB::statement('GRANT ALL ON TABLE public.'.$this->table.' TO "RLS_Users";');
-
-        DB::statement('ALTER TABLE public.' . $this->table . ' ENABLE ROW LEVEL SECURITY;');
-
-        DB::statement('CREATE POLICY user_isolated ON public.' . $this->table . '
-	        AS PERMISSIVE
-	        FOR ALL
-            TO public
-	        USING('.
-                $this->table . '.user::TEXT = current_user
-	        );
-	    ');
+        $this->RLSMigrationTrait($this->table);
 
         DB::statement('CREATE POLICY is_null ON public.' . $this->table . '
 	        AS PERMISSIVE

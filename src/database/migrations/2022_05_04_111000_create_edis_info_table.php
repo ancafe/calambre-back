@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
 
+    use \App\Traits\RLSMigrationTrait;
+
     protected $table = "edis";
 
     public function up()
@@ -26,18 +28,8 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::statement('GRANT ALL ON TABLE public.'.$this->table.' TO "RLS_Users";');
+        $this->RLSMigrationTrait($this->table);
 
-        DB::statement('ALTER TABLE public.' . $this->table . ' ENABLE ROW LEVEL SECURITY;');
-
-        DB::statement('CREATE POLICY user_isolated ON public.' . $this->table . '
-	        AS PERMISSIVE
-	        FOR ALL
-            TO public
-	        USING('.
-                $this->table . '.user::TEXT = current_user
-	        );
-	    ');
 
     }
 

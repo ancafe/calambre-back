@@ -7,9 +7,20 @@ use App\Exceptions\Type\ApiError;
 use App\Http\Controllers\Edis\AbstractEdisController;
 use App\Models\Contract;
 use App\Models\Supply;
+use App\Services\Edis\EdisService;
+use App\Services\FixEncrypter;
+use App\Services\Measure\StorageMeasureService;
 
 class GetDefaultMeasureController extends AbstractEdisController
 {
+    protected StorageMeasureService $measureService;
+
+    public function __construct(EdisService $edisService, FixEncrypter $fixEncrypter, StorageMeasureService $measureService)
+    {
+        $this->measureService = $measureService;
+        parent::__construct($edisService, $fixEncrypter);
+    }
+
     /**
      * @throws ApiError
      * @throws \Exception
@@ -41,6 +52,10 @@ class GetDefaultMeasureController extends AbstractEdisController
             throw new ApiError([ErrorDtoFactory::noActiveContractFounded()]);
         }
 
-        return response()->json($this->edisService->getMeasure($contract->first()->atrId));
+        $measures = $this->edisService->getMeasure($contract->first()->atrId);
+        $this->measureService->storage($measures, $supply->first());
+
+
+        return response()->json($measures);
     }
 }
