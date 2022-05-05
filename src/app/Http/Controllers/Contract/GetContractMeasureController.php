@@ -8,11 +8,16 @@ use App\Http\Controllers\Edis\AbstractEdisController;
 use App\Jobs\ReadMeasureFromEDISAndStore;
 use App\Models\Contract;
 use App\Models\Supply;
+use App\Services\API_Response\APISuccess;
 use App\Services\Edis\EdisService;
 use App\Services\FixEncrypter;
 use App\Services\Measure\StorageMeasureService;
 use App\Services\SplitDates;
 use Cassandra\Date;
+use Illuminate\Bus\Batch;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class GetContractMeasureController extends AbstractEdisController
 {
@@ -70,15 +75,40 @@ class GetContractMeasureController extends AbstractEdisController
         }
 
 
-        $intervals = $this->splitDates->toArray(
-            date_create_from_format("Y-m-d", $startDate),
-            date_create_from_format("Y-m-d", $endDate)
-        );
-        foreach ($intervals as $interval) {
-            ReadMeasureFromEDISAndStore::dispatch(auth()->user(), $contract, $getSupply, $interval['start'], $interval['end']);
+        $startInterval = $startDate ? date_create_from_format("Y-m-d", $startDate) : null;
+        $endInterval = $endDate ? date_create_from_format("Y-m-d", $endDate) : null;
+
+        if (!$startDate && !$endDate) {
+            $intervals = [[
+                'start' => null,
+                'end' => null,
+            ]];
+        } else {
+            $intervals = $this->splitDates->toArray($startInterval, $endInterval);
         }
 
-        return response()->json(count($intervals) . ' job/s sended to queue');
+
+        $batchClasses = [];
+        foreach ($intervals as $interval) {
+            $batchClasses[] = new ReadMeasureFromEDISAndStore(auth()->user(), $contract, $getSupply, $interval['start'], $interval['end']);
+        }
+
+        $batch = Bus::batch($batchClasses)
+            ->then(function (Batch $batch) {
+                // All jobs completed successfully...
+                Log::info("Batch " . $batch->id . " executed successful");
+            })->catch(function (Batch $batch, Throwable $e) {
+                // First batch job failure detected...
+                Log::error("Error during execute batch " . $batch->id);
+            })->finally(function (Batch $batch) {
+                // The batch has finished executing...
+            })
+            ->name("Import measure: U: " . auth()->user()->email . " [" . $startDate . " - " . $endDate . "]")
+            ->dispatch();
+
+
+        Log::info('Batch with id ' . $batch->id . ' with ' . count($intervals) . ' jobs sent to queue. It will execute in few seconds...');
+        return response()->json(new APISuccess('Batch with id ' . $batch->id . ' with ' . count($intervals) . ' jobs sent to queue. It will execute in few seconds...'));
 
     }
 }

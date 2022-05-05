@@ -14,7 +14,13 @@ class SplitDates
     {
         $array = [];
         $daysByGroup = 60; //max days interval in Edis
+
+        if (!$end) {
+            $end = clone $start;
+        }
+
         $diff = (int)$start->diff($end)->format("%r%a");
+
 
         if ($diff < 0) {
             throw new ApiError([ErrorDtoFactory::intervalMalformed()]);

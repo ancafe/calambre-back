@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Services\Edis\EdisService;
 use App\Services\Measure\StorageMeasureService;
 use Edistribucion\EdisClient;
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -21,13 +22,13 @@ use Illuminate\Queue\SerializesModels;
 
 class ReadMeasureFromEDISAndStore implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
 
     protected Contract $contract;
     protected Supply $supply;
-    protected \DateTime $startDate;
-    protected \DateTime $endDate;
+    protected ?\DateTime $startDate;
+    protected ?\DateTime $endDate;
     protected EdisService $edisService;
     protected StorageMeasureService $storageService;
     protected User $user;
@@ -38,9 +39,9 @@ class ReadMeasureFromEDISAndStore implements ShouldQueue
      * @return void
      */
     public function __construct(
-        User $user,
-        Contract $contract,
-        Supply $supply,
+        User       $user,
+        Contract   $contract,
+        Supply     $supply,
         ?\DateTime $startDate = null,
         ?\DateTime $endDate = null
     )
@@ -70,14 +71,13 @@ class ReadMeasureFromEDISAndStore implements ShouldQueue
             )
         );
 
-        $measures = null;
-        if ($this->startDate <= $this->endDate) {
-            $measures = $this->edisService->getMeasureInterval($this->contract->atrId, $this->startDate, $this->endDate);
-        } else {
+        if (!$this->startDate && !$this->endDate) {
             $measures = $this->edisService->getMeasure($this->contract->atrId);
+        } else {
+            $measures = $this->edisService->getMeasureInterval($this->contract->atrId, $this->startDate, $this->endDate);
         }
 
-        if ($measures){
+        if ($measures) {
             $this->storageService->storage($measures, $this->user, $this->supply);
         } else {
             throw new ApiError([ErrorDtoFactory::noMeasureFounded()]);
