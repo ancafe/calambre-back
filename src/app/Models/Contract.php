@@ -43,9 +43,9 @@ class Contract extends Model
         return $this->belongsTo(Company::class);
     }
 
-    public function supply(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function belongsToSupply(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Supply::class);
+        return $this->belongsTo(Supply::class, 'supply', 'id');
     }
 
 

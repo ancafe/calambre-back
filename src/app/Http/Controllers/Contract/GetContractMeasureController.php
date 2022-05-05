@@ -13,7 +13,6 @@ use App\Services\Edis\EdisService;
 use App\Services\FixEncrypter;
 use App\Services\Measure\StorageMeasureService;
 use App\Services\SplitDates;
-use Cassandra\Date;
 use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
@@ -71,7 +70,7 @@ class GetContractMeasureController extends AbstractEdisController
             }
             $getSupply = $supply->first();
         } else {
-            $getSupply = $contract->supply;
+            $getSupply = $contract->belongsToSupply;
         }
 
 
