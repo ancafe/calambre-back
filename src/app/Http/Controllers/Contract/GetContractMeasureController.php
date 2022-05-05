@@ -11,15 +11,24 @@ use App\Models\Supply;
 use App\Services\Edis\EdisService;
 use App\Services\FixEncrypter;
 use App\Services\Measure\StorageMeasureService;
+use App\Services\SplitDates;
 use Cassandra\Date;
 
 class GetContractMeasureController extends AbstractEdisController
 {
     protected StorageMeasureService $measureService;
+    protected SplitDates $splitDates;
 
-    public function __construct(EdisService $edisService, FixEncrypter $fixEncrypter, StorageMeasureService $measureService)
+    public function __construct(
+        EdisService           $edisService,
+        FixEncrypter          $fixEncrypter,
+        StorageMeasureService $measureService,
+        SplitDates            $splitDates,
+
+    )
     {
         $this->measureService = $measureService;
+        $this->splitDates = $splitDates;
         parent::__construct($edisService, $fixEncrypter);
     }
 
@@ -60,42 +69,16 @@ class GetContractMeasureController extends AbstractEdisController
             $getSupply = $contract->supply;
         }
 
-        $measures = null;
-        $interval = true;
 
-        $startDate = new \DateTime($startDate);
-        $endDate = new \DateTime($endDate);
-
-        // no date defined. We read the measures from yesterday
-        if (!$startDate && !$endDate) {
-            $interval = false;
+        $intervals = $this->splitDates->toArray(
+            date_create_from_format("Y-m-d", $startDate),
+            date_create_from_format("Y-m-d", $endDate)
+        );
+        foreach ($intervals as $interval) {
+            ReadMeasureFromEDISAndStore::dispatch(auth()->user(), $contract, $getSupply, $interval['start'], $interval['end']);
         }
 
-        // only startDate defined. We read the measure for that specific date
-        if ($startDate && !$endDate) {
-            $endDate = clone $startDate;
-        }
-
-        // startDate and endDate defined. We read the measure for that interval
-        if ($startDate && $endDate) {
-
-            $diff = (int)$startDate->diff($endDate)->format("%r%a");
-
-            if ($diff < 0) {
-                throw new ApiError([ErrorDtoFactory::intervalMalformed()]);
-            }
-
-            if ($diff > 60) {
-                throw new ApiError([ErrorDtoFactory::intervalOutOfRange()]);
-            }
-        }
-
-        if (!$startDate && $endDate) {
-            throw new ApiError([ErrorDtoFactory::undefined()]);
-        }
-
-        ReadMeasureFromEDISAndStore::dispatch(auth()->user(), $contract, $getSupply, $startDate, $endDate, $interval);
-        return response()->json('Jobs sended to queue');
+        return response()->json(count($intervals) . ' job/s sended to queue');
 
     }
 }

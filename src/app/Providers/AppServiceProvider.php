@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Jobs\ReadMeasureFromEDISAndStore;
 use App\Services\Edis\EdisService;
 use Edistribucion\EdisClient;
+use Illuminate\Cache\RateLimiter;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

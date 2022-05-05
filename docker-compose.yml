@@ -58,7 +58,25 @@ services:
     networks:
       - calambre
 
+  redis:
+    image: "redis:alpine"
+    command: redis-server
+    container_name: calambre-queue
+    expose:
+      - "6379"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - redis-data:/data
+      - redis-conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - calambre
+
+
 networks:
   calambre:
     driver: bridge
 
+volumes:
+  redis-data:
+  redis-conf:

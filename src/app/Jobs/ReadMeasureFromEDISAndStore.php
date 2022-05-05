@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Exceptions\ErrorDtoFactory;
 use App\Exceptions\Type\ApiError;
+use App\Jobs\Middleware\RateLimiterForEdis;
 use App\Models\Contract;
 use App\Models\EdisInfo;
 use App\Models\Supply;
@@ -27,7 +28,6 @@ class ReadMeasureFromEDISAndStore implements ShouldQueue
     protected Supply $supply;
     protected \DateTime $startDate;
     protected \DateTime $endDate;
-    protected bool $interval;
     protected EdisService $edisService;
     protected StorageMeasureService $storageService;
     protected User $user;
@@ -42,8 +42,7 @@ class ReadMeasureFromEDISAndStore implements ShouldQueue
         Contract $contract,
         Supply $supply,
         ?\DateTime $startDate = null,
-        ?\DateTime $endDate = null,
-        bool $interval = false
+        ?\DateTime $endDate = null
     )
     {
         $this->user = $user->withoutRelations();
@@ -51,7 +50,6 @@ class ReadMeasureFromEDISAndStore implements ShouldQueue
         $this->supply = $supply->withoutRelations();
         $this->startDate = $startDate;
         $this->endDate = $endDate;
-        $this->interval = $interval;
 
     }
 
@@ -73,8 +71,7 @@ class ReadMeasureFromEDISAndStore implements ShouldQueue
         );
 
         $measures = null;
-
-        if ($this->interval) {
+        if ($this->startDate <= $this->endDate) {
             $measures = $this->edisService->getMeasureInterval($this->contract->atrId, $this->startDate, $this->endDate);
         } else {
             $measures = $this->edisService->getMeasure($this->contract->atrId);
@@ -85,5 +82,10 @@ class ReadMeasureFromEDISAndStore implements ShouldQueue
         } else {
             throw new ApiError([ErrorDtoFactory::noMeasureFounded()]);
         }
+    }
+
+    public function middleware()
+    {
+        return [new RateLimiterForEdis];
     }
 }

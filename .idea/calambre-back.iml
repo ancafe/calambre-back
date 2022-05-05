@@ -134,6 +134,14 @@
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/swagger-api/swagger-ui" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/symfony/yaml" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/psr/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/symfony/mailer" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/fruitcake/php-cors" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/laravel/horizon" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/edistribucion/edistribucion" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/spatie/flare-client-php" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/spatie/ignition" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/spatie/backtrace" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/spatie/laravel-ignition" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -39,6 +39,10 @@ RUN docker-php-ext-install \
         gd \
         opcache
 
+
+# REDIS for queue
+RUN pecl install redis && docker-php-ext-enable redis
+
 # apcu for caching, xdebug for debugging and also phpunit coverage
 RUN pecl install \
         xdebug \

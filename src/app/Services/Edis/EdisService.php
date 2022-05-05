@@ -2,6 +2,7 @@
 
 namespace App\Services\Edis;
 
+use App\Jobs\ReadMeasureFromEDISAndStore;
 use Edistribucion\EdisClient;
 use Edistribucion\EdisError;
 
@@ -52,8 +53,7 @@ class EdisService
 
     public function getMeasureInterval(string $internalId, \DateTime $startDate, \DateTime $endDate): array|string
     {
-
-        return $this->edis->get_meas_interval($internalId,$startDate,$endDate);
+        return $this->edis->get_meas_interval($internalId, $startDate, $endDate);
     }
 
     public function getCUPSDetail(string $cupsID)

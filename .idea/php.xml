@@ -234,6 +234,26 @@
       <path value="$PROJECT_DIR$/calambre/vendor/zircote/swagger-php" />
       <path value="$PROJECT_DIR$/calambre/vendor/darkaonline/l5-swagger" />
       <path value="$PROJECT_DIR$/calambre/vendor/betterapp/laravel-db-encrypter" />
+      <path value="$PROJECT_DIR$/src/vendor/symfony/mailer" />
+      <path value="$PROJECT_DIR$/src/vendor/betterapp/laravel-db-encrypter" />
+      <path value="$PROJECT_DIR$/src/vendor/fruitcake/php-cors" />
+      <path value="$PROJECT_DIR$/src/vendor/lcobucci/clock" />
+      <path value="$PROJECT_DIR$/src/vendor/lcobucci/jwt" />
+      <path value="$PROJECT_DIR$/src/vendor/doctrine/annotations" />
+      <path value="$PROJECT_DIR$/src/vendor/laravel/horizon" />
+      <path value="$PROJECT_DIR$/src/vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/src/vendor/psr/cache" />
+      <path value="$PROJECT_DIR$/src/vendor/swagger-api/swagger-ui" />
+      <path value="$PROJECT_DIR$/src/vendor/zircote/swagger-php" />
+      <path value="$PROJECT_DIR$/src/vendor/namshi/jose" />
+      <path value="$PROJECT_DIR$/src/vendor/darkaonline/l5-swagger" />
+      <path value="$PROJECT_DIR$/src/vendor/edistribucion/edistribucion" />
+      <path value="$PROJECT_DIR$/src/vendor/spatie/flare-client-php" />
+      <path value="$PROJECT_DIR$/src/vendor/spatie/ignition" />
+      <path value="$PROJECT_DIR$/src/vendor/spatie/backtrace" />
+      <path value="$PROJECT_DIR$/src/vendor/spatie/laravel-ignition" />
+      <path value="$PROJECT_DIR$/src/vendor/php-open-source-saver/jwt-auth" />
+      <path value="$PROJECT_DIR$/src/vendor/stella-maris/clock" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
