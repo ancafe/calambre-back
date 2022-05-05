@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Jobs\ReadMeasureFromEDISAndStore;
+use App\Services\Edis\EdisService;
 use Edistribucion\EdisClient;
 use Illuminate\Support\ServiceProvider;
 
@@ -31,6 +33,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+
     }
 }

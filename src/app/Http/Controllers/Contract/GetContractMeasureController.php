@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Contract;
 use App\Exceptions\ErrorDtoFactory;
 use App\Exceptions\Type\ApiError;
 use App\Http\Controllers\Edis\AbstractEdisController;
+use App\Jobs\ReadMeasureFromEDISAndStore;
 use App\Models\Contract;
 use App\Models\Supply;
 use App\Services\Edis\EdisService;
@@ -60,46 +61,41 @@ class GetContractMeasureController extends AbstractEdisController
         }
 
         $measures = null;
+        $interval = true;
 
         $startDate = new \DateTime($startDate);
         $endDate = new \DateTime($endDate);
 
         // no date defined. We read the measures from yesterday
         if (!$startDate && !$endDate) {
-            $measures = $this->edisService->getMeasure($contract->atrId);
+            $interval = false;
         }
 
         // only startDate defined. We read the measure for that specific date
         if ($startDate && !$endDate) {
-            $measures = $this->edisService->getMeasureInterval($contract->atrId, $startDate, $startDate);
+            $endDate = clone $startDate;
         }
 
         // startDate and endDate defined. We read the measure for that interval
         if ($startDate && $endDate) {
 
-            $diff = (int) $startDate->diff($endDate)->format("%r%a");
+            $diff = (int)$startDate->diff($endDate)->format("%r%a");
 
-            if ($diff < 0){
+            if ($diff < 0) {
                 throw new ApiError([ErrorDtoFactory::intervalMalformed()]);
             }
 
-            if ($diff > 60){
+            if ($diff > 60) {
                 throw new ApiError([ErrorDtoFactory::intervalOutOfRange()]);
             }
-
-            $measures = $this->edisService->getMeasureInterval($contract->atrId, $startDate, $endDate);
         }
 
         if (!$startDate && $endDate) {
             throw new ApiError([ErrorDtoFactory::undefined()]);
         }
 
-        if ($measures){
-            $this->measureService->storage($measures, $getSupply);
-            return response()->json($measures);
-        } else {
-            throw new ApiError([ErrorDtoFactory::noMeasureFounded()]);
-        }
+        ReadMeasureFromEDISAndStore::dispatch(auth()->user(), $contract, $getSupply, $startDate, $endDate, $interval);
+        return response()->json('Jobs sended to queue');
 
     }
 }

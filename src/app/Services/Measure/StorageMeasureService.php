@@ -4,6 +4,7 @@ namespace App\Services\Measure;
 
 use App\Models\Measure;
 use App\Models\Supply;
+use App\Models\User;
 use App\Services\FixEncrypter;
 use DateInterval;
 use DateTime;
@@ -17,7 +18,7 @@ class StorageMeasureService
         $this->fixEncrypter = $fixEncrypter;
     }
 
-    public function storage(array $measures, Supply $supply)
+    public function storage(array $measures, User $user, Supply $supply)
     {
         if (!array_key_exists("data",$measures)){
             throw new \Exception();
@@ -29,7 +30,7 @@ class StorageMeasureService
 
         foreach ($measures['data']['lstData'] as $day){
             foreach ($day as $point) {
-                $this->save($point, $supply);
+                $this->save($point, $user, $supply);
             }
 
         }
@@ -39,7 +40,7 @@ class StorageMeasureService
     /**
      * @throws \Exception
      */
-    public function save(array $point, Supply $supply)
+    public function save(array $point, User $user, Supply $supply): void
     {
         $date = DateTime::createFromFormat('d/m/Y H:i:s', $point['date']. " 00:00:00");
 
@@ -51,7 +52,7 @@ class StorageMeasureService
 
         $value = (double) (array_key_exists('valueDouble',$point)) ? $point['valueDouble'] : 0;
 
-        $dbPoint = Measure::updateOrCreate([
+        Measure::updateOrCreate([
             'date' => $date->format('Y-m-d'),
             'supply' => $supply->id,
             'hour' => $point['hour'],
@@ -66,7 +67,7 @@ class StorageMeasureService
             'hour' => $point['hour'],
             'hourCCH' => $point['hourCCH'],
             'supply' => $supply->id,
-            'user' => auth()->user()->id,
+            'user' => $user->id,
         ]);
     }
 
