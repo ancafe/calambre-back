@@ -9,12 +9,12 @@ class APIResponse
 
     public int $code;
     public bool $success;
-    public string $msg;
+    public string|array $msg;
     public array $variables;
 
 
     public function __construct(
-        string $msg,
+        string|array $msg,
         int $code = Response::HTTP_OK,
         bool $success = true,
         array $variables = []

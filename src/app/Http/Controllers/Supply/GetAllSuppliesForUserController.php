@@ -14,6 +14,7 @@ class GetAllSuppliesForUserController extends Controller
 
     public function __invoke(Supply $supply)
     {
-        return response()->json(Supply::with('contracts')->get());
+        return response()->json(new APISuccess(Supply::with('contracts')->get()->toArray()));
+
     }
 }

@@ -36,5 +36,10 @@ class Supply extends Model
         return $this->hasMany(Contract::class, 'supply', 'id');
     }
 
+    public function measure():  \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Measure::class, 'supply', 'id');
+    }
+
 
 }

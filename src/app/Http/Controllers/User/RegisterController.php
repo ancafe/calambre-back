@@ -6,6 +6,7 @@ use App\Exceptions\ErrorDtoFactory;
 use App\Exceptions\Type\ApiError;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\API_Response\APISuccess;
 use App\Services\CreateDatabaseUserWhenUserRegisteredService;
 use App\Services\FixEncrypter;
 use Illuminate\Http\Request;
@@ -70,6 +71,8 @@ class RegisterController extends Controller
 
         $createDatabaseUserWhenUserRegisteredService->create($user->id, $password);
         Log::info("Registered user $user->id with email $user->email");
+
+        //return response()->json(new APISuccess(compact('token')));
 
         return response()->json(compact('user','token'),201);
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Edis;
 use App\Exceptions\ErrorDtoFactory;
 use App\Exceptions\Type\ApiError;
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Services\API_Response\APISuccess;
 use App\Services\Edis\EdisService;
 
@@ -26,6 +27,7 @@ class GetUserBasicInformationController extends AbstractEdisController
         auth()->user()->edis->name = $info['Name'];
         auth()->user()->edis->saveOrFail();
 
-        return response()->json($this->edisService->getLoginInfo());
+        return response()->json(new APISuccess($this->edisService->getLoginInfo()));
+
     }
 }

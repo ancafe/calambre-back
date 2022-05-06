@@ -4,32 +4,23 @@ namespace App\Services;
 
 use App\Exceptions\ErrorDtoFactory;
 use App\Exceptions\Type\ApiError;
-use Illuminate\Support\Facades\Date;
 
 class SplitDates
 {
 
+    protected ValidateDateInterval $validateDateInterval;
 
-    public function toArray(?\DateTime $start, ?\DateTime $end)
+    public function __construct(ValidateDateInterval $validateDateInterval)
+    {
+        $this->validateDateInterval = $validateDateInterval;
+    }
+
+    public function toArray(?\DateTime $start, ?\DateTime $end) : array
     {
         $array = [];
         $daysByGroup = 60; //max days interval in Edis
 
-        if (!$end) {
-            $end = clone $start;
-        }
-
-        $diff = (int)$start->diff($end)->format("%r%a");
-
-
-        if ($diff < 0) {
-            throw new ApiError([ErrorDtoFactory::intervalMalformed()]);
-        }
-
-        if (!$start && $end) {
-            throw new ApiError([ErrorDtoFactory::undefined()]);
-        }
-
+        $this->validateDateInterval->validate($start, $end);
 
         $i = 0;
 
@@ -47,7 +38,7 @@ class SplitDates
             ];
 
             $i++;
-        } while ( $nEnd < $end);
+        } while ($nEnd < $end);
 
 
         return $array;

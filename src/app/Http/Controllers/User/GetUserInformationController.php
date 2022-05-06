@@ -6,6 +6,7 @@ use App\Exceptions\ErrorDtoFactory;
 use App\Exceptions\Type\ApiError;
 use App\Exceptions\Type\ApiNotFoundError;
 use App\Http\Controllers\Controller;
+use App\Services\API_Response\APISuccess;
 use JWTAuth;
 
 class GetUserInformationController extends Controller
@@ -33,6 +34,8 @@ class GetUserInformationController extends Controller
         } catch (\PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException $e) {
             throw new ApiError([ErrorDtoFactory::tokenAbsent()]);
         }
-        return response()->json(compact('user'));
+
+        return response()->json(new APISuccess(compact('user')));
+
     }
 }

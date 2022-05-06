@@ -6,6 +6,7 @@ use App\Exceptions\ErrorDtoFactory;
 use App\Exceptions\Type\ApiInternalError;
 use App\Exceptions\Type\ApiUnauthorizedError;
 use App\Http\Controllers\Controller;
+use App\Services\API_Response\APISuccess;
 use App\Services\FixEncrypter;
 use Illuminate\Http\Request;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
@@ -61,6 +62,8 @@ class LoginController extends Controller
         } catch (JWTException $e) {
             throw new ApiInternalError([ErrorDtoFactory::couldNotCreateToken()]);
         }
-        return response()->json(compact('token'));
+
+        return response()->json(new APISuccess(compact('token')));
+
     }
 }

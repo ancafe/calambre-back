@@ -19,6 +19,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class ReadMeasureFromEDISAndStore implements ShouldQueue
 {
@@ -72,10 +73,14 @@ class ReadMeasureFromEDISAndStore implements ShouldQueue
         );
 
         if (!$this->startDate && !$this->endDate) {
+            Log::info("Start reading measures for a single day");
             $measures = $this->edisService->getMeasure($this->contract->atrId);
         } else {
+            Log::info("Start reading measures interval");
             $measures = $this->edisService->getMeasureInterval($this->contract->atrId, $this->startDate, $this->endDate);
         }
+
+        Log::debug($measures);
 
         if ($measures) {
             $this->storageService->storage($measures, $this->user, $this->supply);

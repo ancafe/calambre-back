@@ -99,7 +99,7 @@ class ErrorDtoFactory
 
     public static function intervalOutOfRange($variables = null): ErrorDto
     {
-        return new ErrorDto('3-6', 'Interval out of range. Max days between dates: 60', $variables);
+        return new ErrorDto('3-6', 'Interval out of range. Max days between dates.', $variables);
     }
 
 }
