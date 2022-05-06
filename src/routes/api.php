@@ -16,13 +16,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::withoutMiddleware('auth:api')->group(function () {
     Route::post('register', \App\Http\Controllers\User\RegisterController::class);
-    Route::post('login', \App\Http\Controllers\User\LoginController::class);
+    Route::post('login', [\App\Http\Controllers\User\LoginController::class, 'login']);
+    Route::post('refresh', [\App\Http\Controllers\User\LoginController::class, 'refresh'])->withoutMiddleware(['auth:api']);
+
 });
 
 Route::group(['middleware' => ['jwt.verify', 'RLS']], function () {
     Route::get('me', \App\Http\Controllers\User\GetUserInformationController::class);
-    Route::prefix('/edis')->group(__DIR__.'/API/edis.php');
-    Route::prefix('/supply')->group(__DIR__.'/API/supply.php');
-    Route::prefix('/contract')->group(__DIR__.'/API/contract.php');
+    Route::post('logout', \App\Http\Controllers\User\LogoutController::class);
+    Route::prefix('/edis')->group(__DIR__ . '/API/edis.php');
+    Route::prefix('/supply')->group(__DIR__ . '/API/supply.php');
+    Route::prefix('/contract')->group(__DIR__ . '/API/contract.php');
 });
 

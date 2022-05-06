@@ -45,7 +45,7 @@ class LoginController extends Controller
      * @throws ApiUnauthorizedError
      * @throws ApiInternalError
      */
-    public function __invoke(Request $request)
+    public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
 
@@ -63,7 +63,43 @@ class LoginController extends Controller
             throw new ApiInternalError([ErrorDtoFactory::couldNotCreateToken()]);
         }
 
-        return response()->json(new APISuccess(compact('token')));
-
+        return $this->respondWithToken($token);
     }
+
+    /**
+     * Get the token array structure.
+     *
+     * @param  string $token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ]);
+    }
+
+
+
+    /**
+     *
+     * @OA\Post (
+     *     path="/api/refresh",
+     *     summary="Refresh token",
+     *     @OA\Response(response=200, description="Get a new valid token"),
+     * )
+     *
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh(Request $request)
+    {
+        return $this->respondWithToken(auth()->refresh());
+    }
+
 }
