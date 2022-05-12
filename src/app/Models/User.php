@@ -24,10 +24,13 @@ class User extends Authenticatable implements JWTSubject
         'edisUser',
     ];
 
+    protected $with = [
+        'edis'
+    ];
+
     protected $hidden = [
         'password',
         'remember_token',
-        'edisPassword',
     ];
 
     protected $casts = [
@@ -54,6 +57,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return auth()->payload()->get('encrypt_key') ?: null;
     }
+
 
     public function supplies(): \Illuminate\Database\Eloquent\Relations\HasMany
     {

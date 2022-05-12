@@ -46,7 +46,7 @@ class StorageMeasureService
 
         $startAt = clone $date;
         $endAt = clone $date;
-        $hour = $point['hourCCH'];
+        $hour = $point['hournum'];
         $startAt->add(new DateInterval("PT".($hour-1)."H"));
         $endAt->add(new DateInterval("PT".($hour)."H"));
 
@@ -56,7 +56,7 @@ class StorageMeasureService
             'date' => $date->format('Y-m-d'),
             'supply' => $supply->id,
             'hour' => $point['hour'],
-            'hourCCH' => $point['hourCCH'],
+            'hournum' => $point['hournum'],
         ],[
             'date' => $date->format('Y-m-d'),
             'startAt' => $startAt->format('Y-m-d H:i:s'),
@@ -65,7 +65,7 @@ class StorageMeasureService
             'invoiced' => $point['invoiced'],
             'value' => $value,
             'hour' => $point['hour'],
-            'hourCCH' => $point['hourCCH'],
+            'hournum' => $point['hournum'],
             'supply' => $supply->id,
             'user' => $user->id,
         ]);

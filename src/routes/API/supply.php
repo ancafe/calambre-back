@@ -13,4 +13,6 @@ Route::put('{supply}/main', \App\Http\Controllers\Supply\SetAsMainSupplyControll
 
 
 Route::get('/{supply}/data/{startDate}/{endDate}', \App\Http\Controllers\Supply\GetCUPSDataIntervalController::class);
+Route::get('/{supply}/data/lastWeek/', \App\Http\Controllers\Supply\GetCUPSDataLastWeekController::class);
+Route::get('/{supply}/data/week/', \App\Http\Controllers\Supply\GetCUPSDataCurrentWeekController::class);
 

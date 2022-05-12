@@ -21,7 +21,7 @@ return new class extends Migration {
 
             $table->date("date")->nullable();
             $table->string("hour")->nullable();
-            $table->integer("hourCCH")->nullable();
+            $table->integer("hournum")->nullable();
             $table->dateTime("startAt")->nullable();
             $table->dateTime("endAt")->nullable();
             $table->boolean("invoiced")->default(false);

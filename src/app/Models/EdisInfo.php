@@ -20,6 +20,9 @@ class EdisInfo extends Model
         'main'
     ];
 
+    protected $hidden = [
+        'edisPassword',
+    ];
 
     protected $casts = [
         'username' => 'encrypted',
