@@ -85,8 +85,8 @@ class GetCUPSDataService
         $data = [];
         foreach ($measures as $measure) {
             $data[] = [
-                'x' => $measure->value,
-                'y' => $measure->date,
+                'x' => $measure->date,
+                'y' => $measure->value,
 
             ];
         }
@@ -96,22 +96,22 @@ class GetCUPSDataService
     private function get_in_bar_mode($measures)
     {
         $data = [];
-        $periods = Period::orderBy('code', 'ASC')->get();
+        $periods = Period::orderBy('code', 'DESC')->get();
 
         foreach ($periods as $period) {
 
             $filtered_by_period = $this->filter_by_period($measures, $period->code);
             $format_to_chart = $this->get_measures_in_chart_format($filtered_by_period);
 
-            $group_by_date = collect($format_to_chart)->groupBy('y')->map(function ($row) {
-                return $row->sum('x');
+            $group_by_date = collect($format_to_chart)->groupBy('x')->map(function ($row) {
+                return $row->sum('y');
             });
 
             $temp = [];
             foreach ($group_by_date as $key => $value) {
                 $temp[] = [
-                    'x' => $value,
-                    'y' => $key,
+                    'x' => $key,
+                    'y' => round($value,2),
                 ];
             }
             $group_by_date = $temp;
@@ -121,6 +121,7 @@ class GetCUPSDataService
                 'data' => $group_by_date
             ];
         }
+
         return $data;
 
     }
