@@ -4,6 +4,7 @@ namespace App\Services\Measure;
 
 use App\Exceptions\Type\ApiError;
 use App\Models\Measure;
+use App\Models\Period;
 use App\Models\Supply;
 use App\Services\ValidateDateInterval;
 use Illuminate\Support\Facades\DB;
@@ -50,39 +51,11 @@ class GetCUPSDataService
     {
         $this->validateDateInterval->validate($from, $to, 366);
 
-        $measures = DB::table("measures")
-            ->select("measures.date", "hour_period.period_code", DB::raw("sum(measures.value) as total"))
-            ->where('supply', $supply->id)
-            ->leftJoin("hour_period", function ($join) {
-                $join->on('hour_period.hour_id', "=", "measures.hournum")
-                    ->where('hour_period.weekday', "=", DB::raw("extract(dow from date::timestamp)"))
-                    ->where('hour_period.holiday', "=", false);
-            })
+        $measures = Measure::select()->where('supply', $supply->id)
             ->whereBetween('date', [$from->format("Y-m-d"), $to->format("Y-m-d")])
-            ->groupBy("hour_period.period_code")
-            ->groupBy("measures.date")
-            ->orderBy("measures.date", "ASC")
-            ->orderBy("hour_period.period_code", "ASC")
+            ->orderBy("startAt", "ASC")
+            ->orderBy("hour", "ASC")
             ->get();
-
-
-        $uniqueDays = [];
-        foreach($measures as $measure)
-        {
-            if (!in_array($measure->date, $uniqueDays)) {
-                $uniqueDays[] = $measure->date;
-            }
-        }
-
-        $uniquePeriods = [];
-        foreach($measures as $measure)
-        {
-            if (!in_array($measure->period_code, $uniquePeriods)) {
-                $uniquePeriods[] = $measure->period_code;
-            }
-        }
-
-
 
 
         return [
@@ -92,9 +65,63 @@ class GetCUPSDataService
             'max' => round(collect($measures)->max('value'), 3),
             'min' => round(collect($measures)->min('value'), 3),
             'total' => round(collect($measures)->sum('value'), 3),
-            'data' => $measures,
+            'data' => $this->get_in_bar_mode($measures),
         ];
 
+
+    }
+
+    private function filter_by_period($measures, $code)
+    {
+        return collect($measures)->filter(function ($item) use ($code) {
+            if ($item->period == $code) {
+                return true;
+            }
+        });
+    }
+
+    private function get_measures_in_chart_format($measures)
+    {
+        $data = [];
+        foreach ($measures as $measure) {
+            $data[] = [
+                'x' => $measure->value,
+                'y' => $measure->date,
+
+            ];
+        }
+        return $data;
+    }
+
+    private function get_in_bar_mode($measures)
+    {
+        $data = [];
+        $periods = Period::orderBy('code', 'ASC')->get();
+
+        foreach ($periods as $period) {
+
+            $filtered_by_period = $this->filter_by_period($measures, $period->code);
+            $format_to_chart = $this->get_measures_in_chart_format($filtered_by_period);
+
+            $group_by_date = collect($format_to_chart)->groupBy('y')->map(function ($row) {
+                return $row->sum('x');
+            });
+
+            $temp = [];
+            foreach ($group_by_date as $key => $value) {
+                $temp[] = [
+                    'x' => $value,
+                    'y' => $key,
+                ];
+            }
+            $group_by_date = $temp;
+
+            $data[] = [
+                'name' => $period->code,
+                'data' => $group_by_date
+            ];
+        }
+        return $data;
 
     }
 }
