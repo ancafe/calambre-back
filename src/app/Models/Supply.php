@@ -49,12 +49,12 @@ class Supply extends Model
     {
 
         $latest = Measure::where("value", ">", 0)
-            ->where("supply", $this->id)
+            ->where("supply", "=", $this->id)
             ->orderBy("date", "DESC")
             ->orderBy("hournum", "DESC")
             ->first();
-
-        return ($latest) ? $latest->data : null;
+        
+        return ($latest) ? new Carbon($latest->date . " " . $latest->hournum . ":00:00") : null;
     }
 
 
