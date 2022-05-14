@@ -6,7 +6,6 @@ use App\Casts\EncrypterCast;
 use App\Traits\UUID;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Date;
 
 class Supply extends Model
 {
@@ -27,7 +26,7 @@ class Supply extends Model
         'provisioning_address' => 'encrypted',
     ];
 
-    protected $appends = ['last_data'];
+    protected $appends = ['last_data', 'first_data'];
 
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -53,9 +52,22 @@ class Supply extends Model
             ->orderBy("date", "DESC")
             ->orderBy("hournum", "DESC")
             ->first();
-        
+
         return ($latest) ? new Carbon($latest->date . " " . $latest->hournum . ":00:00") : null;
     }
+
+    public function getFirstDataAttribute(): Carbon|null
+    {
+
+        $latest = Measure::where("value", ">", 0)
+            ->where("supply", "=", $this->id)
+            ->orderBy("date", "ASC")
+            ->orderBy("hournum", "ASC")
+            ->first();
+
+        return ($latest) ? new Carbon($latest->date . " " . $latest->hournum . ":00:00") : null;
+    }
+
 
 
 }

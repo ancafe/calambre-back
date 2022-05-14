@@ -17,4 +17,6 @@ Route::get('/{supply}/data/{startDate}', \App\Http\Controllers\Supply\GetCUPSDat
 
 Route::get('/{supply}/data/lastWeek/', \App\Http\Controllers\Supply\GetCUPSDataLastWeekController::class);
 Route::get('/{supply}/data/week/', \App\Http\Controllers\Supply\GetCUPSDataCurrentWeekController::class);
+Route::get('/{supply}/data/months/', \App\Http\Controllers\Supply\GetCUPSDataByMonthsController::class);
+Route::get('/{supply}/data/months/{year}', \App\Http\Controllers\Supply\GetCUPSDataByMonthsController::class);
 

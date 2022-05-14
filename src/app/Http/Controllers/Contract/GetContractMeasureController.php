@@ -92,18 +92,23 @@ class GetContractMeasureController extends AbstractEdisController
             $batchClasses[] = new ReadMeasureFromEDISAndStore(auth()->user(), $contract, $getSupply, $interval['start'], $interval['end']);
         }
 
-        $batch = Bus::batch($batchClasses)
-            ->then(function (Batch $batch) {
-                // All jobs completed successfully...
-                Log::info("Batch " . $batch->id . " executed successful");
-            })->catch(function (Batch $batch, Throwable $e) {
-                // First batch job failure detected...
-                Log::error("Error during execute batch " . $batch->id);
-            })->finally(function (Batch $batch) {
-                // The batch has finished executing...
-            })
-            ->name("Import measure: U: " . auth()->user()->email . " [" . $startDate . " - " . $endDate . "]")
-            ->dispatch();
+        try {
+            $batch = Bus::batch($batchClasses)
+                ->then(function (Batch $batch) {
+                    // All jobs completed successfully...
+                    Log::info("Batch " . $batch->id . " executed successful");
+                })->catch(function (Batch $batch, Throwable $e) {
+                    // First batch job failure detected...
+                    Log::error("Error during execute batch " . $batch->id);
+                })->finally(function (Batch $batch) {
+                    // The batch has finished executing...
+                })
+                ->name("Import measure: U: " . auth()->user()->email . " [" . $startDate . " - " . $endDate . "]")
+                ->dispatch();
+        } catch (\RedisException $e) {
+            throw new ApiError([ErrorDtoFactory::redisServerError()]);
+        }
+
 
 
         Log::info('Batch with id ' . $batch->id . ' with ' . count($intervals) . ' jobs sent to queue. It will execute in few seconds...');

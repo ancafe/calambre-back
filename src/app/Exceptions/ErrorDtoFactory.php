@@ -102,4 +102,9 @@ class ErrorDtoFactory
         return new ErrorDto('3-6', 'Interval out of range. Max days between dates.', $variables);
     }
 
+    public static function redisServerError($variables = null): ErrorDto
+    {
+        return new ErrorDto('4-1', 'Cannot connect to Redis server.', $variables);
+    }
+
 }

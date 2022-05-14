@@ -29,7 +29,7 @@ class GetCUPSDataService
             ->get();
     }
 
-    public function returnDTO(Collection $measures, \DateTime $from, \DateTime $to, $customData)
+    public function returnDTO(\Illuminate\Support\Collection|\Illuminate\Database\Eloquent\ºCollection $measures, \DateTime $from, \DateTime $to, $customData)
     {
         return [
             'from' => $from->format("Y-m-d"),
@@ -61,6 +61,21 @@ class GetCUPSDataService
 
     }
 
+    public function monthly(Supply $supply, \DateTime $from, \DateTime $to): array
+    {
+        $this->validateDateInterval->validate($from, $to, 366);
+        $measures = DB::table("measures")
+            ->select(DB::raw("DATE_PART('month', date) as month"))
+            ->addSelect(DB::raw("sum(measures.value) as total"))
+            ->where('supply', $supply->id)
+            ->whereBetween('date', [$from->format("Y-m-d"), $to->format("Y-m-d")])
+            ->groupBy(DB::raw("DATE_PART('month', date)"))
+            ->get();
+
+        return $this->returnDTO($measures, $from, $to, $this->get_in_monthly_mode($measures));
+
+    }
+
 
     public function bar(Supply $supply, \DateTime $from, \DateTime $to): array
     {
@@ -79,7 +94,7 @@ class GetCUPSDataService
         });
     }
 
-    private function get_measures_in_chart_format($measures)
+    private function get_measures_in_chart_format($measures): array
     {
         $data = [];
         foreach ($measures as $measure) {
@@ -92,7 +107,7 @@ class GetCUPSDataService
         return $data;
     }
 
-    private function get_in_bar_mode($measures)
+    private function get_in_bar_mode($measures): array
     {
         $data = [];
         $periods = Period::orderBy('code', 'DESC')->get();
@@ -125,7 +140,7 @@ class GetCUPSDataService
 
     }
 
-    private function get_in_daily_mode($measures)
+    private function get_in_daily_mode($measures): array
     {
         $data = [];
 
@@ -147,20 +162,42 @@ class GetCUPSDataService
         ];
 
         return $data;
-
     }
 
-    private  function color (string $period): string
+
+    private function get_in_monthly_mode($measures): array
     {
-        if ($period == "P1"){
+        $data = [];
+
+
+        $serie_consumption_data = [];
+        foreach ($measures as $interval) {
+
+            $serie_consumption_data[] = [
+                'x' => date('F', strtotime("1900-$interval->month-01")) ,
+                'y' => round($interval->total,3)
+            ];
+        }
+
+        $data[] = [
+            'name' => 'kWh',
+            'data' => $serie_consumption_data
+        ];
+
+        return $data;
+    }
+
+    private function color(string $period): string
+    {
+        if ($period == "P1") {
             return Measure::P1COLOR;
         }
 
-        if ($period == "P2"){
+        if ($period == "P2") {
             return Measure::P2COLOR;
         }
 
-        if ($period == "P3"){
+        if ($period == "P3") {
             return Measure::P3COLOR;
         }
 
