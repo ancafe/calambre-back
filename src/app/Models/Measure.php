@@ -10,6 +10,12 @@ class Measure extends Model
 {
     use UUID;
 
+    const P1COLOR = '#f2970f';
+    const P2COLOR = '#96b633';
+    const P3COLOR = '#c4dd8c';
+
+
+
     protected $fillable = [
         'user',
         'supply',

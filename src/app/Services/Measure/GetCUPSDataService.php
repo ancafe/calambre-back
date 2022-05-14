@@ -7,6 +7,7 @@ use App\Models\Measure;
 use App\Models\Period;
 use App\Models\Supply;
 use App\Services\ValidateDateInterval;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class GetCUPSDataService
@@ -19,20 +20,17 @@ class GetCUPSDataService
         $this->validateDateInterval = $validateDateInterval;
     }
 
-    /**
-     * @throws ApiError
-     */
-    public function get(Supply $supply, \DateTime $from, \DateTime $to): array
+    public function getMeasure(Supply $supply, \DateTime $from, \DateTime $to): Collection
     {
-        $this->validateDateInterval->validate($from, $to, 366);
-
-        $measures = Measure::select()->where('supply', $supply->id)
+        return Measure::select()->where('supply', $supply->id)
             ->whereBetween('date', [$from->format("Y-m-d"), $to->format("Y-m-d")])
             ->orderBy("startAt", "ASC")
             ->orderBy("hour", "ASC")
             ->get();
+    }
 
-
+    public function returnDTO(Collection $measures, \DateTime $from, \DateTime $to, $customData)
+    {
         return [
             'from' => $from->format("Y-m-d"),
             'to' => $to->format("Y-m-d"),
@@ -40,9 +38,26 @@ class GetCUPSDataService
             'max' => round(collect($measures)->max('value'), 3),
             'min' => round(collect($measures)->min('value'), 3),
             'total' => round(collect($measures)->sum('value'), 3),
-            'data' => $measures,
+            'data' => $customData,
         ];
+    }
 
+    /**
+     * @throws ApiError
+     */
+    public function get(Supply $supply, \DateTime $from, \DateTime $to): array
+    {
+        $this->validateDateInterval->validate($from, $to, 366);
+        $measures = $this->getMeasure($supply, $from, $to);
+        return $this->returnDTO($measures, $from, $to, $measures);
+
+    }
+
+    public function daily(Supply $supply, \DateTime $from, \DateTime $to): array
+    {
+        $this->validateDateInterval->validate($from, $to, 366);
+        $measures = $this->getMeasure($supply, $from, $to);
+        return $this->returnDTO($measures, $from, $to, $this->get_in_daily_mode($measures));
 
     }
 
@@ -50,24 +65,8 @@ class GetCUPSDataService
     public function bar(Supply $supply, \DateTime $from, \DateTime $to): array
     {
         $this->validateDateInterval->validate($from, $to, 366);
-
-        $measures = Measure::select()->where('supply', $supply->id)
-            ->whereBetween('date', [$from->format("Y-m-d"), $to->format("Y-m-d")])
-            ->orderBy("startAt", "ASC")
-            ->orderBy("hour", "ASC")
-            ->get();
-
-
-        return [
-            'from' => $from->format("Y-m-d"),
-            'to' => $to->format("Y-m-d"),
-            'avg' => round(collect($measures)->avg('value'), 3),
-            'max' => round(collect($measures)->max('value'), 3),
-            'min' => round(collect($measures)->min('value'), 3),
-            'total' => round(collect($measures)->sum('value'), 3),
-            'data' => $this->get_in_bar_mode($measures),
-        ];
-
+        $measures = $this->getMeasure($supply, $from, $to);
+        return $this->returnDTO($measures, $from, $to, $this->get_in_bar_mode($measures));
 
     }
 
@@ -111,7 +110,7 @@ class GetCUPSDataService
             foreach ($group_by_date as $key => $value) {
                 $temp[] = [
                     'x' => $key,
-                    'y' => round($value,2),
+                    'y' => round($value, 2),
                 ];
             }
             $group_by_date = $temp;
@@ -124,6 +123,48 @@ class GetCUPSDataService
 
         return $data;
 
+    }
+
+    private function get_in_daily_mode($measures)
+    {
+        $data = [];
+
+
+        $serie_consumption_data = [];
+        foreach ($measures as $interval) {
+
+            $serie_consumption_data[] = [
+                'date' => $interval->date,
+                'x' => $interval->hour,
+                'y' => $interval->value,
+                'fillColor' => $this->color($interval->period)
+            ];
+        }
+
+        $data[] = [
+            'name' => 'kWh',
+            'data' => $serie_consumption_data
+        ];
+
+        return $data;
+
+    }
+
+    private  function color (string $period): string
+    {
+        if ($period == "P1"){
+            return Measure::P1COLOR;
+        }
+
+        if ($period == "P2"){
+            return Measure::P2COLOR;
+        }
+
+        if ($period == "P3"){
+            return Measure::P3COLOR;
+        }
+
+        return "#000000"; //black
     }
 }
 
