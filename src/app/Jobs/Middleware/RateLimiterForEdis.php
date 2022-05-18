@@ -18,13 +18,13 @@ class RateLimiterForEdis
     public function handle($job, $next)
     {
         Redis::throttle('edis')
-            ->block(0)->allow(1)->every(5)
+            ->block(0)->allow(1)->every(10)
             ->then(function () use ($job, $next) {
                 Log::info("executed job at ". now());
                 $next($job);
             }, function () use ($job) {
                 // Could not obtain lock...
-                $job->release(5);
+                $job->release(30);
             });
 
     }

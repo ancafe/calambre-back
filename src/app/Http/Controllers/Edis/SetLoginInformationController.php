@@ -15,6 +15,26 @@ class SetLoginInformationController extends Controller
 {
 
     /**
+     * @OA\Put(
+     *     path="/api/edis/set",
+     *     summary="Set the login information for e-distribucion",
+     *     @OA\Parameter(
+     *          name="body",
+     *          in="query",
+     *          description="JSON Payload",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="object",
+     *              @OA\Property(property="username", type="string", example="my_username"),
+     *              @OA\Property(property="password", type="string", example="***********"),
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     ),
+     *     security={{ "apiAuth": {} }}
+     * )
      * @return \Illuminate\Http\JsonResponse
      * @throws ApiError|\Throwable
      */
@@ -31,7 +51,7 @@ class SetLoginInformationController extends Controller
 
         $edisInfo = EdisInfo::updateOrCreate([
             'user' => auth()->user()->id
-        ],[
+        ], [
             'username' => $request->get('username'),
             'password' => $request->get('password'),
             'user' => auth()->user()->id

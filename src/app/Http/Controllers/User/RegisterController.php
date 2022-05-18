@@ -6,7 +6,6 @@ use App\Exceptions\ErrorDtoFactory;
 use App\Exceptions\Type\ApiError;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\API_Response\APISuccess;
 use App\Services\CreateDatabaseUserWhenUserRegisteredService;
 use App\Services\FixEncrypter;
 use Illuminate\Http\Request;
@@ -29,12 +28,18 @@ class RegisterController extends Controller
      *     path="/api/register",
      *     summary="Register new user",
      *     @OA\Parameter(
-     *         description="Name for the registered user",
-     *         in="path",
-     *         name="name",
-     *         required=true,
-     *         @OA\Schema(type="string")
-     *     ),
+     *          name="body",
+     *          in="query",
+     *          description="JSON Payload for user register",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="object",
+     *              @OA\Property(property="email", type="string", example="user@user.com"),
+     *              @OA\Property(property="name", type="string", example="My Name"),
+     *              @OA\Property(property="password", type="string", example="***********"),
+     *              @OA\Property(property="password_confirmation", type="string", example=""),
+     *          )
+     *      ),
      *     @OA\Response(
      *         response=200,
      *         description="OK"

@@ -12,6 +12,17 @@ use Illuminate\Support\Facades\Log;
 class GetAllSuppliesForUserController extends Controller
 {
 
+    /**
+     * @OA\Get(
+     *     path="/api/supply/all",
+     *     summary="Get all supplies from user",
+     *     security={{ "apiAuth": {} }},
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     )
+     * )
+     */
     public function __invoke(Supply $supply)
     {
         return response()->json(new APISuccess(Supply::with('contracts')->get()->toArray()));

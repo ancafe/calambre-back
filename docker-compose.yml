@@ -9,7 +9,7 @@ services:
       context: ./
       dockerfile: Dockerfile
     image: calambre
-    container_name: calambre-app
+    container_name: calambre-api
     restart: unless-stopped
     working_dir: /var/www/
     volumes:

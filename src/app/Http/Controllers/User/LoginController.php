@@ -54,9 +54,8 @@ class LoginController extends Controller
             $credentials['email'] = $this->fixEncrypter->encryptString($credentials['email']);
         }
 
-        //We add manually a new claims into payload for saving the given encrypt key
         try {
-            if (! $token = auth()->claims(['encrypt_key' => $request->get('encrypt_key')])->attempt($credentials)) {
+            if (! $token = auth()->attempt($credentials)) {
                 throw new ApiUnauthorizedError([ErrorDtoFactory::invalidCredentials()]);
             }
         } catch (JWTException $e) {

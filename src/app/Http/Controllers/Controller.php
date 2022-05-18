@@ -12,7 +12,7 @@ use Illuminate\Routing\Controller as BaseController;
  *      version="0.1",
  *      x={
  *          "logo": {
- *              "url": "https://via.placeholder.com/190x90.png?text=L5-Swagger"
+ *              "url": "https://via.placeholder.com/190x90.png?text=CALAMBRE"
  *          }
  *      },
  *      title="Calambre: API Documentation ",

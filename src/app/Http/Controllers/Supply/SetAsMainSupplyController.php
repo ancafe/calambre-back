@@ -12,6 +12,25 @@ use Illuminate\Support\Facades\Log;
 class SetAsMainSupplyController extends Controller
 {
 
+    /**
+     * @OA\Put(
+     *     path="/api/supply/{supply}/main",
+     *     summary="Set the defined supply as the main supply",
+     *     @OA\Parameter(
+     *         description="UUID of a supply",
+     *         in="path",
+     *         name="supply",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     ),
+     *     security={{ "apiAuth": {} }}
+     * )
+     * @throws ApiError
+     */
     public function __invoke(Supply $supply)
     {
 

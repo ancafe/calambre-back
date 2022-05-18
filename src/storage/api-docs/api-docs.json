@@ -12,14 +12,157 @@
         },
         "version": "0.1",
         "x-logo": {
-            "url": "https://via.placeholder.com/190x90.png?text=L5-Swagger"
+            "url": "https://via.placeholder.com/190x90.png?text=CALAMBRE"
         }
     },
     "paths": {
+        "/api/contract/{contract}/measure/{from}/{to}/": {
+            "get": {
+                "summary": "Get measure interval from contract",
+                "operationId": "9a82a68d5cc736582865cc43c7240787",
+                "parameters": [
+                    {
+                        "name": "contract",
+                        "in": "path",
+                        "description": "UUID of a contract",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "from",
+                        "in": "path",
+                        "description": "Date from",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "2021-01-01"
+                    },
+                    {
+                        "name": "to",
+                        "in": "path",
+                        "description": "Date to",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "2021-01-15"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/edis/set": {
+            "put": {
+                "summary": "Set the login information for e-distribucion",
+                "operationId": "41bfb9c8fd2e0f122d30371373c007a0",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "query",
+                        "description": "JSON Payload",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "username": {
+                                    "type": "string",
+                                    "example": "my_username"
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "example": "***********"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/supply/all": {
+            "get": {
+                "summary": "Get all supplies from user",
+                "operationId": "e570122dfa0b376268ce5863aa2cb1ea",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/supply/{supply}/main": {
+            "put": {
+                "summary": "Set the defined supply as the main supply",
+                "operationId": "89afd1d72096478777507397e025389a",
+                "parameters": [
+                    {
+                        "name": "supply",
+                        "in": "path",
+                        "description": "UUID of a supply",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/me": {
+            "get": {
+                "summary": "Get the autheticated user information",
+                "operationId": "6426a6007b0ba5d2d815fd28be8e7f22",
+                "responses": {
+                    "200": {
+                        "description": "Return a list of resources"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
         "/api/login": {
             "post": {
                 "summary": "New Make a login using email and password",
-                "operationId": "4d730c449df9d7cd37cc97b2daddf8ad",
+                "operationId": "7aa7d3caa017713a5197dc2ae1c359b3",
                 "requestBody": {
                     "content": {
                         "multipart/form-data": {
@@ -44,34 +187,58 @@
                 }
             }
         },
-        "/api/me": {
-            "get": {
-                "summary": "Get the autheticated user information",
-                "operationId": "ca2ca5606bd9df231c2e1566ba9b63ce",
+        "/api/refresh": {
+            "post": {
+                "summary": "Refresh token",
+                "operationId": "46bef7370eb7be1a3bc93c4c66a1b32f",
                 "responses": {
                     "200": {
-                        "description": "Return a list of resources"
+                        "description": "Get a new valid token"
                     }
-                },
-                "security": [
-                    {
-                        "apiAuth": []
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "summary": "Logout user",
+                "operationId": "6fe7d41bac84706234db704afdbea190",
+                "responses": {
+                    "200": {
+                        "description": "Successfully logged out"
                     }
-                ]
+                }
             }
         },
         "/api/register": {
             "post": {
                 "summary": "Register new user",
-                "operationId": "8a56853624e025573120a09a4c75d468",
+                "operationId": "ff3e3eb0bd7df2f33d33796741b690d5",
                 "parameters": [
                     {
-                        "name": "name",
-                        "in": "path",
-                        "description": "Name for the registered user",
+                        "name": "body",
+                        "in": "query",
+                        "description": "JSON Payload for user register",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "example": "user@user.com"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "example": "My Name"
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "example": "***********"
+                                },
+                                "password_confirmation": {
+                                    "type": "string",
+                                    "example": ""
+                                }
+                            },
+                            "type": "object"
                         }
                     }
                 ],
