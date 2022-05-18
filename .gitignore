@@ -1,6 +1,7 @@
 .docker/postgres-data/
 # ---- Sonar
 .sonar
+src/logger.log
 
 # ---- IntelliJ IDEA
 *.iws
