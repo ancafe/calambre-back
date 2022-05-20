@@ -43,7 +43,15 @@ APP_FIX_IV_FOR_EMAIL=**********************==
 ...
 ```
 
+4. Create an example user:
 
+```
+curl --location --request POST 'http://localhost:8080/api/register' --header 'Authorization: Bearer null' --form 'email="admin@calambre.localhost"' --form 'name="Demo User"' --form 'password="demo"' --form 'password_confirmation="demo"'
+```
+
+| User                     | Password |
+|--------------------------|----------|
+| admin@calambre.localhost | demo     |
 
 
 
