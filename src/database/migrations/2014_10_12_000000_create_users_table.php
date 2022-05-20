@@ -14,6 +14,7 @@ return new class extends Migration
      */
     public function up()
     {
+        DB::statement('DROP ROLE IF EXISTS "RLS_Users";');
         DB::statement('CREATE ROLE "RLS_Users" WITH NOLOGIN NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;');
 
         Schema::create('users', function (Blueprint $table) {

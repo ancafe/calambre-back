@@ -11,7 +11,7 @@ This repository it the backend part of a final Degree in Computer Engineering wo
 
 ## Installation process
 
-Execute the following commands:
+1. Execute the following commands:
 
 ```
 mkdir calambre && cd calambre
@@ -21,18 +21,26 @@ cp src/.env.example src/.env
 mkdir .docker/postgres-data
 ```
 
-Edit the file `src/.env`
+2. Edit the file `src/.env`
 
 
 ```
 docker compose up -d --build
 docker exec -it calambre-api bash
 composer install
-php artisan calambre:show_IV
 php artisan key:generate
 php artisan jwt:secret
 php artisan migrate --seed
+clear
+php artisan IV:generate
+```
 
+3. Replace the printed line ``APP_FIX_IV_FOR_EMAIL=**********************==`` in the `.env` file (line 3)
+
+```
+...
+APP_FIX_IV_FOR_EMAIL=**********************==
+...
 ```
 
 
