@@ -18,6 +18,7 @@ mkdir calambre && cd calambre
 git clone https://github.com/ancafe/calambre-back
 cd calambre-back
 cp src/.env.example src/.env
+mkdir .docker/postgres-data
 ```
 
 Edit the file `src/.env`
@@ -26,7 +27,8 @@ Edit the file `src/.env`
 ```
 docker compose up -d --build
 docker exec -it calambre-api bash
-php artisan generate:key
+composer install
+php artisan key:generate
 php artisan jwt:secret
 php artisan migrate --seed
 ```
