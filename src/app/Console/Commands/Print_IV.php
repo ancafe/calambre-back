@@ -11,7 +11,7 @@ class Print_IV extends Command
      *
      * @var string
      */
-    protected $signature = 'calambre:show_IV';
+    protected $signature = 'IV:random';
 
     /**
      * The console command description.

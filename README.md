@@ -28,9 +28,11 @@ Edit the file `src/.env`
 docker compose up -d --build
 docker exec -it calambre-api bash
 composer install
+php artisan calambre:show_IV
 php artisan key:generate
 php artisan jwt:secret
 php artisan migrate --seed
+
 ```
 
 
