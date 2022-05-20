@@ -35,7 +35,7 @@ clear
 php artisan IV:generate
 ```
 
-3. Replace the printed line ``APP_FIX_IV_FOR_EMAIL=**********************==`` in the `.env` file (line 3)
+3. Replace the printed line in the `.env` file (line 3)
 
 ```
 ...
@@ -46,12 +46,12 @@ APP_FIX_IV_FOR_EMAIL=**********************==
 4. Create an example user:
 
 ```
-curl --location --request POST 'http://localhost:8080/api/register' --header 'Authorization: Bearer null' --form 'email="admin@calambre.localhost"' --form 'name="Demo User"' --form 'password="demo"' --form 'password_confirmation="demo"'
+curl --location --request POST 'http://calambre-nginx/api/register' --header 'Authorization: Bearer null' --form 'email="admin@calambre.localhost"' --form 'name="Demo User"' --form 'password="Demo1234"' --form 'password_confirmation="Demo1234"'  
 ```
 
 | User                     | Password |
 |--------------------------|----------|
-| admin@calambre.localhost | demo     |
+| admin@calambre.localhost | Demo1234 |
 
 
 
