@@ -25,7 +25,7 @@ services:
     image: postgres
     container_name: calambre-db
     restart: unless-stopped
-    user: 1000:1000
+    user: "${POSTGRES_UID}:${POSTGRES_GID}"`
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: calambre_db
