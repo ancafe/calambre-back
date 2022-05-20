@@ -46,12 +46,9 @@ APP_FIX_IV_FOR_EMAIL=**********************==
 4. Create an example user:
 
 ```
-curl --location --request POST 'http://calambre-nginx/api/register' --header 'Authorization: Bearer null' --form 'email="admin@calambre.localhost"' --form 'name="Demo User"' --form 'password="Demo1234"' --form 'password_confirmation="Demo1234"'  
+curl --location --request POST 'http://calambre-nginx/api/register' --header 'Authorization: Bearer null' --form 'email="admin@calambre.localhost"' --form 'name="Demo User"' --form 'password="Demo1234"' --form 'password_confirmation="Demo1234"'; echo  
 ```
 
 | User                     | Password |
 |--------------------------|----------|
 | admin@calambre.localhost | Demo1234 |
-
-
-
