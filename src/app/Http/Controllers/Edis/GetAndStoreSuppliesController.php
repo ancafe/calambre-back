@@ -19,39 +19,6 @@ class GetAndStoreSuppliesController extends AbstractEdisController
 
     /**
      *
-     * @OA\Get(
-     *     path="/api/contract/{contract}/measure/{from}/{to}/",
-     *     summary="Get measure interval from contract",
-     *     @OA\Parameter(
-     *         description="UUID of a contract",
-     *         in="path",
-     *         name="contract",
-     *         required=true,
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Parameter(
-     *         description="Date from",
-     *         in="path",
-     *         name="from",
-     *         required=true,
-     *         example="2021-01-01",
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Parameter(
-     *         description="Date to",
-     *         in="path",
-     *         name="to",
-     *         required=true,
-     *         example="2021-01-15",
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="OK"
-     *     ),
-     *     security={{ "apiAuth": {} }}
-     * )
-     *
      * @throws ApiError
      * @throws \Exception
      */
@@ -114,9 +81,8 @@ class GetAndStoreSuppliesController extends AbstractEdisController
                 $msg[] = "New ATR contract added to supply " . $dbSupply->cups . " with number " . $dbContract->atrNumContract . " and internal ID " . $dbContract->atrId;
 
             }
-            return response()->json(new APISuccess($msg));
-
         }
+        return response()->json(new APISuccess($msg));
 
 
     }
