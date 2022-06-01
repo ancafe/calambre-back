@@ -44,7 +44,7 @@ class Supply extends Model
         return $this->hasMany(Measure::class, 'supply', 'id');
     }
 
-    public function getLastDataAttribute(): Carbon|null
+    public function getLastDataAttribute(): ?string
     {
 
         $latest = Measure::where("value", ">", 0)
@@ -53,10 +53,11 @@ class Supply extends Model
             ->orderBy("hournum", "DESC")
             ->first();
 
-        return ($latest) ? new Carbon($latest->date . " " . $latest->hournum . ":00:00") : null;
+        $return = ($latest) ? new Carbon($latest->date . " " . $latest->hournum . ":00:00") : null;
+        return ($return) ? $return->format("Y-m-d H:i:s") : null;
     }
 
-    public function getFirstDataAttribute(): Carbon|null
+    public function getFirstDataAttribute(): ?string
     {
 
         $latest = Measure::where("value", ">", 0)
@@ -65,7 +66,9 @@ class Supply extends Model
             ->orderBy("hournum", "ASC")
             ->first();
 
-        return ($latest) ? new Carbon($latest->date . " " . $latest->hournum . ":00:00") : null;
+        $return = ($latest) ? new Carbon($latest->date . " " . $latest->hournum . ":00:00") : null;
+        return ($return) ? $return->format("Y-m-d H:i:s") : null;
+
     }
 
 

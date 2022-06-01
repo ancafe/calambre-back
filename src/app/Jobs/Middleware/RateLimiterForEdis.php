@@ -18,7 +18,7 @@ class RateLimiterForEdis
     public function handle($job, $next)
     {
         Redis::throttle('edis')
-            ->block(0)->allow(1)->every(10)
+            ->block(0)->allow(1)->every(30)
             ->then(function () use ($job, $next) {
                 Log::info("executed job at ". now());
                 $next($job);
