@@ -11,18 +11,18 @@
         "darkaonline/l5-swagger": "^8.3",
         "edistribucion/edistribucion": "dev-main",
         "guzzlehttp/guzzle": "^7.2",
-        "laravel/framework": "^9.2",
+        "laravel/framework": "^v10.48",
         "laravel/horizon": "^5.9",
         "laravel/tinker": "^2.7",
-        "php-open-source-saver/jwt-auth": "^1.4"
+        "php-open-source-saver/jwt-auth": "^2.7.2"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.9.1",
-        "laravel/sail": "^1.0.1",
-        "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^6.1",
+        "fakerphp/faker": "^v1.24.1",
+        "laravel/sail": "^v1.39",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^v7.11.0",
         "phpunit/phpunit": "^9.5.10",
-        "spatie/laravel-ignition": "^1.0"
+        "spatie/laravel-ignition": "^2.9.0"
     },
     "autoload": {
         "psr-4": {

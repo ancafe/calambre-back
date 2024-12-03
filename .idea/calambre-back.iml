@@ -2,8 +2,6 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/app" isTestSource="false" packagePrefix="App\" />
       <sourceFolder url="file://$MODULE_DIR$/src/database/factories" isTestSource="false" packagePrefix="Database\Factories\" />
       <sourceFolder url="file://$MODULE_DIR$/src/database/seeders" isTestSource="false" packagePrefix="Database\Seeders\" />
@@ -142,6 +140,17 @@
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/spatie/ignition" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/spatie/backtrace" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/spatie/laravel-ignition" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/carbonphp/carbon-doctrine-types" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/guzzlehttp/uri-template" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/laravel/prompts" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/league/flysystem-local" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/mck89/peast" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/nunomaduro/termwind" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/psr/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/spatie/error-solutions" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/symfony/polyfill-php83" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/symfony/polyfill-uuid" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/symfony/uid" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
